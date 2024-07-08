@@ -28,6 +28,24 @@ export class Preloader extends Scene {
 
     this.load.image("logo", "logo.png");
     this.load.image("star", "star.png");
+
+    // ** LOAD BIOMES
+    this.load.image("cobblestone_1", "/biomes/cobblestone_1.png");
+    this.load.image("dirty_1", "/biomes/dirty_1.png");
+    this.load.image("grass_1", "/biomes/grass_1.png");
+    this.load.image("sand_1", "/biomes/sand_1.png");
+
+    // ** LOAD SPRITES
+    this.load.spritesheet({
+      key: "human",
+      url: "/sprites/char_p1_human.png",
+      frameConfig: {
+        frameWidth: 32,
+        frameHeight: 38,
+        startFrame: 0,
+        endFrame: 8,
+      },
+    });
   }
 
   create() {
