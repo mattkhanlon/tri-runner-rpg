@@ -38,11 +38,11 @@ export class Preloader extends Scene {
     // ** LOAD SPRITES
     this.load.spritesheet({
       key: "human",
-      url: "/sprites/char_p1_human.png",
+      url: "/sprites/char_p1/char_p1_human.png",
       frameConfig: {
         frameWidth: 32,
         frameHeight: 38,
-        startFrame: 0,
+        startFrame: 1,
         endFrame: 8,
       },
     });

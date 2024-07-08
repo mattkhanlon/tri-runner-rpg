@@ -1,10 +1,16 @@
 import { EventBus } from "../EventBus";
-import { Scene } from "phaser";
+import { Cameras, GameObjects, Scene } from "phaser";
+import { Player } from "../classes/Player";
 
 export class Game extends Scene {
-  camera: Phaser.Cameras.Scene2D.Camera;
-  background: Phaser.GameObjects.Image;
-  gameText: Phaser.GameObjects.Text;
+  camera: Cameras.Scene2D.Camera;
+  background: GameObjects.Image;
+  gameText: GameObjects.Text;
+
+  private player!: GameObjects.Sprite;
+
+  // ** VARIABLES
+  private keyEscape: Phaser.Input.Keyboard.Key | undefined;
 
   constructor() {
     super("Game");
@@ -17,26 +23,21 @@ export class Game extends Scene {
     this.background = this.add.image(512, 384, "background");
     this.background.setAlpha(0.5);
 
-    this.gameText = this.add
-      .text(
-        512,
-        384,
-        "Make something fun!\nand share it with us:\nsupport@phaser.io",
-        {
-          fontFamily: "Arial Black",
-          fontSize: 38,
-          color: "#ffffff",
-          stroke: "#000000",
-          strokeThickness: 8,
-          align: "center",
-        },
-      )
-      .setOrigin(0.5)
-      .setDepth(100);
+    //** Add the player */
+    this.player = new Player(this, 100, 100);
 
-    this.createKeybindings();
+    //** Enable the HUD */
+    this.enableHUD();
+
+    //** Keybeindings */
+    this.keyEscape = this.input.keyboard?.addKey("Escape");
 
     EventBus.emit("current-scene-ready", this);
+  }
+
+  update() {
+    this.player.update();
+    this.keybindings();
   }
 
   changeScene() {
@@ -45,20 +46,29 @@ export class Game extends Scene {
 
   /** ***********************************************
    ** ***********************************************
+   ** Enables the player HUD
+   *
+   ** **********************************************/
+  enableHUD() {
+    this.gameText = this.add
+      .text(50, 758, "work in progress", {
+        fontFamily: "Arial Black",
+        fontSize: 10,
+        color: "#ffffff",
+      })
+      .setOrigin(0.5)
+      .setDepth(100);
+  }
+
+  /** ***********************************************
+   ** ***********************************************
    ** Create the Keybindings Required for this page.
    *
    *  @todo Move keybings to external config
    ** **********************************************/
-  createKeybindings() {
-    this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
-      switch (event.key.toLowerCase()) {
-        case "escape":
-          this.changeScene();
-          break;
-        default:
-          console.log(event);
-          break;
-      }
-    });
+  keybindings() {
+    if (this.keyEscape?.isDown) {
+      this.changeScene();
+    }
   }
 }

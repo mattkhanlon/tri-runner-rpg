@@ -1,8 +1,8 @@
 import { GameObjects, Scene, Input } from "phaser";
-
 import { EventBus } from "../EventBus";
 
 export class MainMenu extends Scene {
+  // ** VARIABLES
   background: GameObjects.Image;
   logo: GameObjects.Image;
   title: GameObjects.Text;
@@ -10,25 +10,37 @@ export class MainMenu extends Scene {
   logoTween: Phaser.Tweens.Tween | null;
 
   // ** KEY BINDNGS
-  switchScenes: Input.Keyboard.Key;
+  private keySwitchScenes: Input.Keyboard.Key | undefined;
 
   constructor() {
     super("MainMenu");
   }
 
   create() {
-    EventBus.emit("current-scene-ready", this);
-
     this.displayTitle();
-    this.createKeybindings();
+
+    this.keySwitchScenes = this.input.keyboard?.addKey("Enter");
+    EventBus.emit("current-scene-ready", this);
   }
 
+  update() {
+    this.keybindings();
+  }
+
+  /** ***********************************************
+   ** ***********************************************
+   ** Change the scene
+   *
+   *  @todo Move keybings to external config
+   *  @binding {enter} - Click enter to mave to the next screen
+   ** **********************************************/
   changeScene() {
     if (this.logoTween) {
       this.logoTween.stop();
       this.logoTween = null;
     }
 
+    // Disable the keyboard for this scene
     this.scene.start("Game");
   }
 
@@ -69,48 +81,16 @@ export class MainMenu extends Scene {
       .setDepth(100);
   }
 
-  moveLogo(vueCallback: ({ x, y }: { x: number; y: number }) => void) {
-    if (this.logoTween) {
-      if (this.logoTween.isPlaying()) {
-        this.logoTween.pause();
-      } else {
-        this.logoTween.play();
-      }
-    } else {
-      this.logoTween = this.tweens.add({
-        targets: this.logo,
-        x: { value: 750, duration: 3000, ease: "Back.easeInOut" },
-        y: { value: 80, duration: 1500, ease: "Sine.easeOut" },
-        yoyo: true,
-        repeat: -1,
-        onUpdate: () => {
-          if (vueCallback) {
-            vueCallback({
-              x: Math.floor(this.logo.x),
-              y: Math.floor(this.logo.y),
-            });
-          }
-        },
-      });
-    }
-  }
-
   /** ***********************************************
    ** ***********************************************
    ** Create the Keybindings Required for this page.
    *
    *  @todo Move keybings to external config
+   *  @binding {enter} - Click enter to mave to the next screen
    ** **********************************************/
-  createKeybindings() {
-    this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
-      switch (event.key.toLowerCase()) {
-        case "enter":
-          this.changeScene();
-          break;
-        default:
-          console.log(event);
-          break;
-      }
-    });
+  keybindings() {
+    if (this.keySwitchScenes?.isDown) {
+      this.changeScene();
+    }
   }
 }
