@@ -1,0 +1,420 @@
+{
+  "frames": [
+    {
+      "filename": "walk-ver-down-0",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 0,
+        "y": 256
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-down-1",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 64,
+        "y": 256
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-down-2",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 128,
+        "y": 256
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-down-3",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 192,
+        "y": 256
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-down-4",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 256,
+        "y": 256
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-down-5",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 320,
+        "y": 256
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-down-6",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 384,
+        "y": 256
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-down-7",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 448,
+        "y": 256
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-up-0",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 0,
+        "y": 320
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-up-1",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 64,
+        "y": 320
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-up-2",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 128,
+        "y": 320
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-up-3",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 192,
+        "y": 320
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-up-4",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 256,
+        "y": 320
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-up-5",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 320,
+        "y": 320
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-up-6",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 384,
+        "y": 320
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-ver-up-7",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 448,
+        "y": 320
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-right-0",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 0,
+        "y": 382
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-right-1",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 64,
+        "y": 382
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-right-2",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 128,
+        "y": 382
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-right-3",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 192,
+        "y": 382
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-right-4",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 256,
+        "y": 382
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-right-5",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 320,
+        "y": 382
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-right-6",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 384,
+        "y": 382
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-right-7",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 448,
+        "y": 382
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-left-0",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 0,
+        "y": 448
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-left-1",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 64,
+        "y": 448
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-left-2",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 128,
+        "y": 448
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-left-3",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 192,
+        "y": 448
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-left-4",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 256,
+        "y": 448
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-left-5",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 320,
+        "y": 448
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-left-6",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 384,
+        "y": 448
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "walk-hor-left-7",
+      "frame": {
+        "w": 64,
+        "h": 64,
+        "x": 448,
+        "y": 448
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ]
+}
