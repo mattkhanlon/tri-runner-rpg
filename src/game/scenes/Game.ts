@@ -19,12 +19,13 @@ export class Game extends Scene {
   create() {
     this.camera = this.cameras.main;
     this.camera.setBackgroundColor(0x00ff00);
+    this.camera.scaleManager.setZoom(2);
 
     this.background = this.add.image(512, 384, "background");
     this.background.setAlpha(0.5);
 
     //** Add the player */
-    this.player = new Player(this, 100, 100);
+    this.player = new Player(this, 500, 384);
 
     //** Enable the HUD */
     this.enableHUD();
@@ -58,6 +59,8 @@ export class Game extends Scene {
       })
       .setOrigin(0.5)
       .setDepth(100);
+
+    this.cameras.main.startFollow(this.player, true);
   }
 
   /** ***********************************************

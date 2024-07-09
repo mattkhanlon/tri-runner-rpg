@@ -40,12 +40,16 @@ export class Preloader extends Scene {
       key: "human",
       url: "/sprites/char_p1/char_p1_human.png",
       frameConfig: {
-        frameWidth: 32,
-        frameHeight: 38,
-        startFrame: 1,
-        endFrame: 8,
+        frameWidth: 64,
+        frameHeight: 64,
       },
     });
+
+    this.load.atlas(
+      "a-human",
+      "/sprites/char_p1/char_p1_human.png",
+      "/sprites/char_p1/char_p1_human_atlas.json",
+    );
   }
 
   create() {
@@ -53,6 +57,6 @@ export class Preloader extends Scene {
     //  For example, you can define global animations here, so we can use them in other scenes.
 
     //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-    this.scene.start("MainMenu");
+    this.scene.start("Game");
   }
 }

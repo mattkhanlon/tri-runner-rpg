@@ -1,6 +1,7 @@
 import { Physics } from "phaser";
 export class Actor extends Physics.Arcade.Sprite {
   protected hp = 100;
+
   constructor(
     scene: Phaser.Scene,
     x: number,
@@ -13,6 +14,7 @@ export class Actor extends Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
     this.getBody().setCollideWorldBounds(true);
   }
+
   public getDamage(value?: number): void {
     this.scene.tweens.add({
       targets: this,
@@ -30,9 +32,11 @@ export class Actor extends Physics.Arcade.Sprite {
       },
     });
   }
+
   public getHPValue(): number {
     return this.hp;
   }
+
   protected checkFlip(): void {
     if (this.body.velocity.x < 0) {
       this.scaleX = -1;
@@ -40,6 +44,7 @@ export class Actor extends Physics.Arcade.Sprite {
       this.scaleX = 1;
     }
   }
+
   protected getBody(): Physics.Arcade.Body {
     return this.body as Physics.Arcade.Body;
   }
