@@ -36,20 +36,12 @@ export class Preloader extends Scene {
     this.load.image("sand_1", "/biomes/sand_1.png");
 
     // ** LOAD SPRITES
-    this.load.spritesheet({
-      key: "human",
-      url: "/sprites/char_p1/char_p1_human.png",
-      frameConfig: {
-        frameWidth: 64,
-        frameHeight: 64,
+    this.load.texture("player", {
+      IMG: {
+        textureURL: `/sprites/char_player/player.png`,
+        atlasURL: `/sprites/char_player/player.json`,
       },
     });
-
-    this.load.atlas(
-      "a-human",
-      "/sprites/char_p1/char_p1_human.png",
-      "/sprites/char_p1/char_p1_human_atlas.json",
-    );
   }
 
   create() {
