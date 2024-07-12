@@ -1,0 +1,49 @@
+{
+  "anims": [
+    {
+      "key": "walk",
+      "frames": [
+        { "key": "player_default", "frame": "walk-0" },
+        { "key": "player_default", "frame": "walk-1" },
+        { "key": "player_default", "frame": "walk-2" },
+        { "key": "player_default", "frame": "walk-3" },
+        { "key": "player_default", "frame": "walk-4" },
+        { "key": "player_default", "frame": "walk-5" },
+        { "key": "player_default", "frame": "walk-6" },
+        { "key": "player_default", "frame": "walk-7" },
+        { "key": "player_default", "frame": "walk-8" },
+        { "key": "player_default", "frame": "walk-9" }
+      ],
+      "frameRate": 10
+    },
+    {
+      "key": "idle",
+      "frames": [
+        { "key": "player_default", "frame": "idle-0" },
+        { "key": "player_default", "frame": "idle-1" },
+        { "key": "player_default", "frame": "idle-2" },
+        { "key": "player_default", "frame": "idle-3" },
+        { "key": "player_default", "frame": "idle-4" },
+        { "key": "player_default", "frame": "idle-5" },
+        { "key": "player_default", "frame": "idle-6" },
+        { "key": "player_default", "frame": "idle-7" }
+      ],
+      "frameRate": 10
+    },
+    {
+      "key": "attack-basic",
+      "frames": [
+        { "key": "player_default", "frame": "attack-basic-0" },
+        { "key": "player_default", "frame": "attack-basic-1" },
+        { "key": "player_default", "frame": "attack-basic-2" },
+        { "key": "player_default", "frame": "attack-basic-3" },
+        { "key": "player_default", "frame": "attack-basic-4" },
+        { "key": "player_default", "frame": "attack-basic-5" },
+        { "key": "player_default", "frame": "attack-basic-6" },
+        { "key": "player_default", "frame": "attack-basic-7" },
+        { "key": "player_default", "frame": "attack-basic-8" }
+      ],
+      "frameRate": 10
+    }
+  ]
+}

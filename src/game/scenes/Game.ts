@@ -59,7 +59,7 @@ export class Game extends Scene {
     // ** Set up the camera
     this.camera = this.cameras.main;
     this.camera.setBackgroundColor(0x00ff00);
-    this.camera.scaleManager.setZoom(2.5);
+    this.camera.scaleManager.setZoom(1.25);
     this.cameras.main.startFollow(this.player, true);
   }
 

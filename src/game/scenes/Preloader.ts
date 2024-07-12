@@ -27,21 +27,19 @@ export class Preloader extends Scene {
     this.load.setPath("assets");
 
     this.load.image("logo", "logo.png");
-    this.load.image("star", "star.png");
 
-    // ** LOAD BIOMES
-    this.load.image("cobblestone_1", "/biomes/cobblestone_1.png");
-    this.load.image("dirty_1", "/biomes/dirty_1.png");
-    this.load.image("grass_1", "/biomes/grass_1.png");
-    this.load.image("sand_1", "/biomes/sand_1.png");
-
-    // ** LOAD SPRITES
-    this.load.texture("player", {
+    // ** LOAD SPRITES + ANIM
+    this.load.texture("player_default", {
       IMG: {
-        textureURL: `/sprites/char_player/player.png`,
-        atlasURL: `/sprites/char_player/player.json`,
+        textureURL: `/sprites/char_player_default/default.player.png`,
+        atlasURL: `/sprites/char_player_default/default.player.json`,
       },
     });
+
+    this.load.animation(
+      "player_default_anims",
+      "/sprites/char_player_default/anims.player.json",
+    );
   }
 
   create() {

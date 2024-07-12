@@ -13,5 +13,5 @@
     "sand_2.png",
     "sand_3.png"
   ],
-  "sprites": {}
+  "sprites": ["char_player/player"]
 }
