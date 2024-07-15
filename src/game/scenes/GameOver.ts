@@ -1,59 +1,65 @@
+import { GameObjects, Scene } from "phaser";
 import { EventBus } from "../EventBus";
-import { Scene } from "phaser";
+import SceneKeys from "../const/SceneKeys";
+import PlayerFactory from "../factory/PlayerFactory";
+import TextureKeys from "../const/TextureKeys";
+import { PlayerAnimationsKeys } from "../const/AnimationsKeys";
 
 export class GameOver extends Scene {
-  camera: Phaser.Cameras.Scene2D.Camera;
-  background: Phaser.GameObjects.Image;
-  gameOverText: Phaser.GameObjects.Text;
+  // ** [VARIABLES]
+  title: GameObjects.Text;
+  player: GameObjects.Sprite;
 
   constructor() {
     super("GameOver");
   }
 
+  // ** [CREATE]
   create() {
-    this.camera = this.cameras.main;
-    this.camera.setBackgroundColor(0xff0000);
-
-    this.background = this.add.image(512, 384, "background");
-    this.background.setAlpha(0.5);
-
-    this.gameOverText = this.add
-      .text(512, 384, "Game Over", {
-        fontFamily: "Arial Black",
-        fontSize: 64,
-        color: "#ffffff",
-        stroke: "#000000",
-        strokeThickness: 8,
-        align: "center",
-      })
-      .setOrigin(0.5)
-      .setDepth(100);
-
-    this.createKeybindings();
+    this.createScreen();
 
     EventBus.emit("current-scene-ready", this);
   }
 
-  changeScene() {
-    this.scene.start("MainMenu");
+  /** ***********************************************
+   ** Create the starting screen before moving to the
+   ** game screen
+   *
+   *  @todo Add menu options
+   ** **********************************************/
+  createScreen() {
+    // ** Add a Player Model w/ Idle animation playing
+    this.player = PlayerFactory.createPlayer(
+      this,
+      this.cache.json.get(TextureKeys.PlayerJSON),
+    );
+
+    // ** Get the player to activate the controller
+    const text = this.add.text(
+      this.player.x - 40,
+      this.player.y + 50,
+      "You died",
+      {
+        font: "16px Courier",
+      },
+    );
+
+    // ** Play PlayerAnimationsKeys.Idle animation
+    this.player.play(PlayerAnimationsKeys.Idle);
+
+    // ** Play PlayerAnimationsKeys.Hit animation
+    this.player.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+      this.player.play(PlayerAnimationsKeys.Death);
+
+      // ** Play PlayerAnimationsKeys.Death animation
+      this.player.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+        text.destroy();
+        this.changeScene();
+      });
+    });
   }
 
-  /** ***********************************************
-   ** ***********************************************
-   ** Create the Keybindings Required for this page.
-   *
-   *  @todo Move keybings to external config
-   ** **********************************************/
-  createKeybindings() {
-    this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
-      switch (event.key.toLowerCase()) {
-        case "escape":
-          this.changeScene();
-          break;
-        default:
-          console.log(event);
-          break;
-      }
-    });
+  changeScene() {
+    this.scene.start(SceneKeys.MainMenu);
   }
 }

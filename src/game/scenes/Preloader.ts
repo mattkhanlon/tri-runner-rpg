@@ -1,14 +1,13 @@
-import { Scene } from "phaser";
+import SceneKeys from "../const/SceneKeys";
+import TextureKeys from "../const/TextureKeys";
+import AssetPathKeys from "../const/AssetPathKeys";
 
-export class Preloader extends Scene {
+export class Preloader extends Phaser.Scene {
   constructor() {
     super("Preloader");
   }
 
   init() {
-    //  We loaded this image in our Boot Scene, so we can display it here
-    this.add.image(512, 384, "background");
-
     //  A simple progress bar. This is the outline of the bar.
     this.add.rectangle(512, 384, 468, 32).setStrokeStyle(1, 0xffffff);
 
@@ -26,19 +25,20 @@ export class Preloader extends Scene {
     //  Load the assets for the game - Replace with your own assets
     this.load.setPath("assets");
 
-    this.load.image("logo", "logo.png");
+    // **  [LOAD TILES]
+    // **  [LOAD PARTICLES]
 
-    // ** LOAD SPRITES + ANIM
-    this.load.texture("player_default", {
-      IMG: {
-        textureURL: `/sprites/char_player_default/default.player.png`,
-        atlasURL: `/sprites/char_player_default/default.player.json`,
-      },
-    });
+    // **  [LOAD TEXTURES]
+    this.load.aseprite(
+      TextureKeys.Player,
+      AssetPathKeys.Player + "default.player.png",
+      AssetPathKeys.Player + "default.player.json",
+    );
 
-    this.load.animation(
-      "player_default_anims",
-      "/sprites/char_player_default/anims.player.json",
+    // **  [LJSON]
+    this.load.json(
+      TextureKeys.PlayerJSON,
+      AssetPathKeys.Player + "player.json",
     );
   }
 
@@ -47,6 +47,6 @@ export class Preloader extends Scene {
     //  For example, you can define global animations here, so we can use them in other scenes.
 
     //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-    this.scene.start("Game");
+    this.scene.start(SceneKeys.MainMenu);
   }
 }

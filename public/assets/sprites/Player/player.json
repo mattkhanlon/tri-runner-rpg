@@ -1,0 +1,8 @@
+{
+  "player": {
+    "health": 200,
+    "startX": 512,
+    "startY": 384,
+    "equipment": []
+  }
+}

@@ -12,18 +12,24 @@ const config: Phaser.Types.Core.GameConfig = {
   width: 1024,
   height: 768,
   parent: "game-container",
-  backgroundColor: "#028af8",
+  backgroundColor: "#595959",
   physics: {
     default: "arcade",
     arcade: {
       debug: false,
     },
   },
+  input: {
+    gamepad: true,
+  },
   render: {
     antialiasGL: false,
     pixelArt: true,
   },
   scene: [Boot, Preloader, MainMenu, MainGame, GameOver],
+  fps: {
+    min: 30,
+  },
 };
 
 const StartGame = (parent: string) => {
