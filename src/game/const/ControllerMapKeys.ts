@@ -1,4 +1,4 @@
-enum ControllerMappingKeys {
+enum ControllerMapKeys {
   A = 0,
   B = 1,
   X = 2,
@@ -18,4 +18,4 @@ enum ControllerMappingKeys {
   HOME = 16,
 }
 
-export default ControllerMappingKeys;
+export default ControllerMapKeys;

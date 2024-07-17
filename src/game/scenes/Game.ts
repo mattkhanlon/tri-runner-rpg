@@ -1,10 +1,11 @@
 import { EventBus } from "../EventBus";
-import { Cameras, GameObjects, Scene, Input } from "phaser";
+import { Cameras, GameObjects, Scene } from "phaser";
 import SceneKeys from "../const/SceneKeys";
 import { Player } from "../classes/Player";
+import { Level } from "../classes/Level";
 import PlayerFactory from "../factory/PlayerFactory";
-import ControllerMappingKeys from "../const/ControllerMappingKeys";
-import { PlayerAnimationsKeys } from "../const/AnimationsKeys";
+import TextureKeys from "../const/TextureKeys";
+import LevelFactory from "../factory/LevelFactory";
 
 export class Game extends Scene {
   // ** [VARIABLES]
@@ -12,6 +13,7 @@ export class Game extends Scene {
   background: GameObjects.Image;
   gameText: GameObjects.Text;
   player: Player;
+  level: Level;
 
   constructor() {
     super(SceneKeys.Game);
@@ -19,33 +21,39 @@ export class Game extends Scene {
 
   // ** [CREATE]
   create() {
-    this.background = this.add.image(512, 384, "background");
-    this.background.setAlpha(0.25);
+    this.camera = this.cameras.main;
 
     //** Enable the HUD */
+
+    // ** Create the layers up to the base layer
+    this.createLevelLayers(TextureKeys.Level_0_Config);
+
+    // ** Create the player next
     this.createPlayer();
-    this.createHUD();
 
-    // ** Listen for a GAMEPAD_BUTTON_DOWN event
-    this.player
-      .getGamePad()
-      .on(Input.Gamepad.Events.GAMEPAD_BUTTON_DOWN, (event: number) => {
-        console.log(event);
-        switch (event) {
-          case ControllerMappingKeys.BACK:
-            this.player.killPlayer();
+    this.createCamera();
 
-            this.player.once(
-              Phaser.Animations.Events.ANIMATION_COMPLETE,
-              () => {
-                this.changeScene();
-              },
-            );
-            break;
-        }
-      });
+    // ** Add the Top Environment Layer
+    this.level.finalizeLevelCreation();
+  }
+
+  createCamera() {
+    // ** Config the comera to the player
+    this.camera.setZoom(3);
+    this.camera.setBounds(
+      0,
+      0,
+      this.level.map.widthInPixels,
+      this.level.map.heightInPixels,
+    );
+    this.camera.startFollow(this.player, true);
 
     EventBus.emit("current-scene-ready", this);
+  }
+
+  createLevelLayers(level: string) {
+    this.level = LevelFactory.createLevel(this, this.cache.json.get(level));
+    this.level.create();
   }
 
   /**
@@ -55,9 +63,13 @@ export class Game extends Scene {
     // ** Add a Player Model w/ Idle animation playing
     this.player = PlayerFactory.createPlayer(
       this,
-      this.cache.json.get("player_json"),
+      this.cache.json.get(TextureKeys.PlayerJSON),
     );
     this.player.setGamePad(this.input.gamepad?.getPad(0));
+
+    // ** position the player
+    this.player.x = this.level.spawnPoint.x;
+    this.player.y = this.level.spawnPoint.y;
   }
 
   /** ***********************************************
@@ -65,24 +77,13 @@ export class Game extends Scene {
    *
    ** **********************************************/
   createHUD() {
-    this.gameText = this.add
-      .text(50, 758, "work in progress", {
-        fontFamily: "Arial Black",
-        fontSize: 10,
-        color: "#ffffff",
-      })
-      .setOrigin(0.5)
-      .setDepth(100);
-
     // ** Set up the camera
-    this.camera = this.cameras.main;
-    this.camera.setBackgroundColor(0x00000f);
-    this.cameras.main.startFollow(this.player, true);
   }
 
   // ** [UPDATE]
   update() {
     this.player.update();
+    this.level.update(this.player);
   }
 
   /** ***********************************************

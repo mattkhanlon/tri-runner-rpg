@@ -1,8 +1,8 @@
-enum AnimationsKeys {
+enum AnimsKeys {
   PlayerDefault = "player_anims",
 }
 
-export enum PlayerAnimationsKeys {
+export enum PlayerAnimKeys {
   Run = "Run",
   Idle = "Idle",
   Jump = "Jump",
@@ -13,4 +13,4 @@ export enum PlayerAnimationsKeys {
   AttackBasicCombo = "Attack2",
 }
 
-export default AnimationsKeys;
+export default AnimsKeys;

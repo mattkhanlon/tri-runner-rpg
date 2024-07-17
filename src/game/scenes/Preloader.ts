@@ -26,20 +26,25 @@ export class Preloader extends Phaser.Scene {
     this.load.setPath("assets");
 
     // **  [LOAD TILES]
+    // **  [LOAD LEVELS]
+    this.load.image(TextureKeys.Level_0, AssetPathKeys.Level_0);
+    this.load.tilemapTiledJSON(
+      TextureKeys.Level_0_JSON,
+      AssetPathKeys.Level_0_JSON,
+    );
+
     // **  [LOAD PARTICLES]
 
     // **  [LOAD TEXTURES]
     this.load.aseprite(
       TextureKeys.Player,
-      AssetPathKeys.Player + "default.player.png",
-      AssetPathKeys.Player + "default.player.json",
+      AssetPathKeys.Player,
+      AssetPathKeys.PlayerAseprite,
     );
 
-    // **  [LJSON]
-    this.load.json(
-      TextureKeys.PlayerJSON,
-      AssetPathKeys.Player + "player.json",
-    );
+    // **  [JSON]
+    this.load.json(TextureKeys.PlayerJSON, AssetPathKeys.PlayerJSON);
+    this.load.json(TextureKeys.Level_0_Config, AssetPathKeys.Level_0_Config);
   }
 
   create() {
@@ -47,6 +52,6 @@ export class Preloader extends Phaser.Scene {
     //  For example, you can define global animations here, so we can use them in other scenes.
 
     //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-    this.scene.start(SceneKeys.MainMenu);
+    this.scene.start(SceneKeys.Game);
   }
 }

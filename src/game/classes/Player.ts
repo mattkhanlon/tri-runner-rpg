@@ -1,55 +1,28 @@
 import { Input, Scene } from "phaser";
 import { Actor } from "./Actor";
-import { PlayerAnimationsKeys } from "../const/AnimationsKeys";
-import ControllerMappingKeys from "../const/ControllerMappingKeys";
 import TextureKeys from "../const/TextureKeys";
-
-/**
- * Define the JSON Config
- */
-interface PlayerJSON {
-  player: {
-    health: number;
-    startX: number;
-    startY: number;
-    equipment: Array<string>;
-  };
-}
+import ControllerMapKeys from "../const/ControllerMapKeys";
+import { PlayerAnimKeys } from "../const/AnimationsKeys";
+import PlayerConfig from "../config/PlayerConfig";
 
 export class Player extends Actor {
-  // ** [CONFIGS]
-  private playerJson: PlayerJSON;
+  // ** [The amount we will multiply the movingSpeed by]
+  private crouchSpeed: number = 0.45;
 
-  // ** [PLAYER PROPERTIES]
-  // private LEFT_STICK_DEADZONE: number = 0.02; // ** Left stick deadzones
-  // private RIGHT_STICK_DEADZONE: number = 0.02; // ** Right stick deadzones
-  private movementSpeed: number = 100; // ** The amount we will multiply the Left Stick axis by
-  private sprintSpeed: number = 2; // ** The amount we will multiply the movementSpeed by
-  private crouchSpeed: number = 0.45; // ** The amount we will multiply the movementSpeed by
-  private movementSpeedX: number = 0; // ** The current X-axis value
-  private movementSpeedY: number = 0; // ** The current Y-axis value
-
-  // ** [PLAYER FLAGS]
-  protected isMoving: boolean = false;
-  protected isWalkBlocked: boolean = false;
-  protected isSprinting: boolean = false;
-  protected isAttacking: boolean = false;
-  protected isCrouched: boolean = false;
-  protected isJumping: boolean = false;
-
-  // ** [GAMEPAD]
+  // ** [The gamepad for the Player object]
   private gamePad: Input.Gamepad.Gamepad | undefined;
 
-  constructor(scene: Scene, playerConfig: PlayerJSON) {
-    super(
-      scene,
-      playerConfig[TextureKeys.Player].startX,
-      playerConfig[TextureKeys.Player].startY,
-      TextureKeys.Player,
-    );
+  // ** [The amount we will multiply the movingSpeed by]
+  private sprintSpeed: number = 2;
+
+  // ** [GAMEPAD]
+
+  constructor(scene: Scene, playerConfig: PlayerConfig) {
+    super(scene, 0, 0, TextureKeys.Player);
 
     // ** Store the JSON
-    this.playerJson = playerConfig;
+    this.playerConfig = playerConfig;
+    this.movingSpeed = this.baseSpeed;
 
     // ** Create our sprite animations
     this.anims.createFromAseprite(TextureKeys.Player);
@@ -70,7 +43,7 @@ export class Player extends Actor {
     );
   }
 
-  // ** [UPDATE CHECKS]
+  // ** [UPDATE]
   /** ****************************
    * Check every frame for a update
    ** ****************************/
@@ -78,28 +51,6 @@ export class Player extends Actor {
     if (this.gamePad != undefined) {
       this.updatePlayerMovement();
       this.updatePlayerAnimation();
-    }
-  }
-
-  /** ****************************
-   * Update the movement of the player
-   * object if the movement X & Y
-   * have value greater > 0.
-   *
-   * @example set movementSpeedX/Y to 0 if
-   * keys are not longer pressed.
-   ** ****************************/
-  private updatePlayerMovement() {
-    this.movementSpeedX = this.gamePad.leftStick.x * this.movementSpeed;
-    this.movementSpeedY = this.gamePad.leftStick.y * this.movementSpeed;
-
-    // ** Flip the character in the direction we need him
-    this.getBody().setVelocity(this.movementSpeedX, this.movementSpeedY);
-
-    if (this.movementSpeedX != 0 || this.movementSpeedY != 0)
-      this.isMoving = true;
-    else {
-      this.isMoving = false;
     }
   }
 
@@ -118,38 +69,65 @@ export class Player extends Actor {
       !this.isWalkBlocked &&
       !this.isJumping
     ) {
-      this.playAnimation(PlayerAnimationsKeys.Run);
+      this.playAnimation(PlayerAnimKeys.Run);
     }
 
     // ** If no movement, Play Idle animation
     if (!this.isMoving && !this.isWalkBlocked && !this.isJumping) {
-      this.playAnimation(PlayerAnimationsKeys.Idle);
+      this.playAnimation(PlayerAnimKeys.Idle);
     }
     this.checkFlip();
   }
 
-  // ** [PLAYER CHECKS]
+  /** ****************************
+   * Update the movement of the player
+   * object if the movement X & Y
+   * have value greater > 0.
+   *
+   * @example set movingSpeedX/Y to 0 if
+   * keys are not longer pressed.
+   ** ****************************/
+  private updatePlayerMovement() {
+    // Stop any previous movement from the last frame
+
+    if (!this.isWalkBlocked) {
+      this.movingSpeedX = this.gamePad.leftStick.x * this.movingSpeed;
+      this.movingSpeedY = this.gamePad.leftStick.y * this.movingSpeed;
+    }
+
+    // ** Flip the character in the direction we need him
+    this.getBody().setVelocity(this.movingSpeedX, this.movingSpeedY);
+    //this.getBody().velocity.normalize().scale(5);
+
+    if (this.movingSpeedX != 0 || this.movingSpeedY != 0) {
+      this.isMoving = true;
+    } else {
+      this.isMoving = false;
+    }
+  }
+
+  // ** [CHECKS]
   private checkPlayerButtonOnDown(button: number) {
     switch (button) {
       // ** [ATTACK]
-      case ControllerMappingKeys.RT:
-        this.playerIsAttacking(PlayerAnimationsKeys.AttackBasic);
+      case ControllerMapKeys.RT:
+        this.playerIsAttacking(PlayerAnimKeys.AttackBasic);
 
         this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-          this.playerIsAttacking(PlayerAnimationsKeys.AttackBasicCombo);
+          this.playerIsAttacking(PlayerAnimKeys.AttackBasicCombo);
         });
         break;
       // ** [JUMP]
-      case ControllerMappingKeys.A:
-        this.playerIsJumping(PlayerAnimationsKeys.Jump);
+      case ControllerMapKeys.A:
+        this.playerIsJumping(PlayerAnimKeys.Jump);
         break;
       // ** [SPRINT]
-      case ControllerMappingKeys.LEFT_CLICK:
-        this.playerIsSprinting(PlayerAnimationsKeys.Run, true);
+      case ControllerMapKeys.LEFT_CLICK:
+        this.playerIsSprinting(PlayerAnimKeys.Run, true);
         break;
       // ** [CROUCH]
-      case ControllerMappingKeys.RIGHT_CLICK:
-        this.playerIsCrouching(PlayerAnimationsKeys.Run, true);
+      case ControllerMapKeys.RIGHT_CLICK:
+        this.playerIsCrouching(PlayerAnimKeys.Run, true);
         break;
       default:
         console.log("No action recored");
@@ -157,7 +135,18 @@ export class Player extends Actor {
     }
   }
 
-  // ** [PLAYER ACTION/ITEM/USAGE]
+  // ** [ANIMATIONS]
+  /** ****************************
+   * Play a specific animation based on the key provided
+   *
+   * @param key Name of the animation we want to play
+   ** ****************************/
+  private playAnimation(key: string): void {
+    this.stopAnimation(key);
+    !this.anims.isPlaying && this.anims.play(key);
+  }
+
+  // ** [ACTION/ITEM/USAGE]
   /** ****************************
    * The below functions are designed to keep
    * action animation/checks/code in their
@@ -173,8 +162,8 @@ export class Player extends Actor {
     // ** Set Flags on Player
     this.isAttacking = true;
     this.isWalkBlocked = true;
-    this.movementSpeedX = 0;
-    this.movementSpeedY = 0;
+    this.movingSpeedX = 0;
+    this.movingSpeedY = 0;
 
     // ** Player the animation for Attack
     if (!this.isJumping) this.playAnimation(animation);
@@ -186,36 +175,10 @@ export class Player extends Actor {
     });
   }
 
-  private playerIsJumping(animation: string = "") {
-    this.isJumping = true;
-    this.playAnimation(animation);
-
-    this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-      this.playAnimation(PlayerAnimationsKeys.Fall);
-      this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-        this.isJumping = false;
-      });
-    });
-  }
-
-  private playerIsSprinting(animation: string = "", sprinting: boolean) {
-    if (!this.isSprinting) {
-      this.isSprinting = sprinting;
-    } else {
-      this.isSprinting = false;
-    }
-
-    // ** Modify the movement speed if we're sprinting
-    if (this.isSprinting) {
-      // ** Check we are not crouched
-      if (this.isCrouched) this.playerIsCrouching(undefined, false);
-      this.movementSpeed = this.movementSpeed * this.sprintSpeed;
-      this.playAnimation(animation);
-    } else {
-      this.movementSpeed = this.movementSpeed / this.sprintSpeed;
-    }
-  }
-
+  /** ****************************
+   * Functionality designed around
+   * the player attack
+   ** ****************************/
   private playerIsCrouching(animation: string = "", crouched: boolean) {
     if (!this.isCrouched) {
       this.isCrouched = crouched;
@@ -227,22 +190,49 @@ export class Player extends Actor {
     if (this.isCrouched) {
       // ** Check we are not sprinting
       if (this.isSprinting) this.playerIsSprinting(undefined, false);
-      this.movementSpeed = this.movementSpeed * this.crouchSpeed;
+      this.movingSpeed = this.baseSpeed * this.crouchSpeed;
       this.playAnimation(animation);
     } else {
-      this.movementSpeed = this.movementSpeed / this.crouchSpeed;
+      this.movingSpeed = this.baseSpeed;
     }
   }
 
-  // ** [PLAYER ANIMATIONS]
   /** ****************************
-   * Play a specific animation based on the key provided
-   *
-   * @param key Name of the animation we want to play
+   * Functionality designed around
+   * the player attack
    ** ****************************/
-  private playAnimation(key: string): void {
-    this.stopAnimation(key);
-    !this.anims.isPlaying && this.anims.play(key);
+  private playerIsJumping(animation: string = "") {
+    this.isJumping = true;
+    this.playAnimation(animation);
+
+    this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+      this.playAnimation(PlayerAnimKeys.Fall);
+      this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+        this.isJumping = false;
+      });
+    });
+  }
+
+  /** ****************************
+   * Functionality designed around
+   * the player attack
+   ** ****************************/
+  private playerIsSprinting(animation: string = "", sprinting: boolean) {
+    if (!this.isSprinting) {
+      this.isSprinting = sprinting;
+    } else {
+      this.isSprinting = false;
+    }
+
+    // ** Modify the movement speed if we're sprinting
+    if (this.isSprinting) {
+      // ** Check we are not crouched
+      if (this.isCrouched) this.playerIsCrouching(undefined, false);
+      this.movingSpeed = this.baseSpeed * this.sprintSpeed;
+      this.playAnimation(animation);
+    } else {
+      this.movingSpeed = this.baseSpeed / this.sprintSpeed;
+    }
   }
 
   /** ****************************
@@ -255,28 +245,28 @@ export class Player extends Actor {
     if (this.anims.currentAnim?.key != key) this.anims.stop();
   }
 
-  // ** [GETTERS/SETTERS]
-  setGamePad(gamePad: Input.Gamepad.Gamepad | undefined) {
-    this.gamePad = gamePad;
-    this.initPlayerBindings();
-  }
-
+  // ** [PUBLIC FUNCTIONS]
   getGamePad(): Input.Gamepad.Gamepad | undefined {
     return this.gamePad;
   }
 
+  getPlayerConfig() {
+    return this.playerConfig;
+  }
+
   killPlayer() {
     this.isWalkBlocked = true;
-    this.movementSpeedX = 0; // ** The current X-axis value
-    this.movementSpeedY = 0; // ** The current Y-axis value
+    this.movingSpeedX = 0; // ** The current X-axis value
+    this.movingSpeedY = 0; // ** The current Y-axis value
 
     this.play({
-      key: PlayerAnimationsKeys.Hit,
+      key: PlayerAnimKeys.Hit,
       repeat: 3,
     });
   }
 
-  savePlayerObject() {
-    return this.playerJson;
+  setGamePad(gamePad: Input.Gamepad.Gamepad | undefined) {
+    this.gamePad = gamePad;
+    this.initPlayerBindings();
   }
 }

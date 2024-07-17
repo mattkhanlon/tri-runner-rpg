@@ -1,8 +1,6 @@
 {
   "player": {
-    "health": 200,
-    "startX": 512,
-    "startY": 384,
+    "base_health": 200,
     "equipment": []
   }
 }

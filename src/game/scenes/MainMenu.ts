@@ -3,6 +3,7 @@ import { EventBus } from "../EventBus";
 import SceneKeys from "../const/SceneKeys";
 import PlayerFactory from "../factory/PlayerFactory";
 import TextureKeys from "../const/TextureKeys";
+import { PlayerAnimKeys } from "../const/AnimationsKeys";
 
 export class MainMenu extends Scene {
   // ** [VARIABLES]
@@ -28,18 +29,6 @@ export class MainMenu extends Scene {
    *  @todo Add menu options
    ** **********************************************/
   createScreen() {
-    // this.title = this.add
-    //   .text(512, 220, "VOYAGE", {
-    //     fontFamily: "Arial Black",
-    //     fontSize: 72,
-    //     color: "#000000",
-    //     stroke: "#ffffff",
-    //     strokeThickness: 2,
-    //     align: "center",
-    //   })
-    //   .setOrigin(0.5)
-    //   .setDepth(100);
-
     // ** Add a Player Model w/ Idle animation playing
     this.player = PlayerFactory.createPlayer(
       this,
@@ -47,13 +36,13 @@ export class MainMenu extends Scene {
     );
 
     this.player.play({
-      key: "Idle",
+      key: PlayerAnimKeys.Idle,
       repeat: -1,
     });
 
     // ** Get the player to activate the controller
     const text = this.add.text(
-      this.player.x * 0.75,
+      this.player.x - 125,
       this.player.y + 50,
       "Press any button to continue.",
       { font: "16px Courier" },

@@ -9,18 +9,22 @@ import { Preloader } from "./scenes/Preloader";
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
 const config: Phaser.Types.Core.GameConfig = {
   type: AUTO,
-  width: 1024,
-  height: 768,
+  width: 2048,
+  height: 1024,
   parent: "game-container",
   backgroundColor: "#595959",
+  input: {
+    gamepad: true,
+  },
   physics: {
     default: "arcade",
     arcade: {
-      debug: false,
+      debug: true,
+      debugShowVelocity: true,
     },
   },
-  input: {
-    gamepad: true,
+  scale: {
+    mode: Phaser.Scale.ScaleModes.FIT,
   },
   render: {
     antialiasGL: false,
