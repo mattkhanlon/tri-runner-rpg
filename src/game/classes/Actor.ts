@@ -1,55 +1,43 @@
-import { Physics } from "phaser";
+import { Physics, Scene } from "phaser";
 import PlayerConfig from "../config/PlayerConfig";
 
-export class Actor extends Physics.Arcade.Sprite {
-  protected baseSpeed: number = 300; // ** [The base speed for the user]
+export class Actor extends Physics.Matter.Sprite {
+  protected baseSpeed: number = 1.75; // ** [The base speed for the user]
   protected isMoving: boolean = false; // ** [Flag if the player is moving]
   protected isWalkBlocked: boolean = false; // ** [Flag if the player is blocked from Walking]
   protected isSprinting: boolean = false; // ** [Flag is player is sprinting]
   protected isAttacking: boolean = false; // ** [Flag if player is attacking]
   protected isCrouched: boolean = false; // ** [Flag is player is crouched]
   protected isJumping: boolean = false; // ** [Flag if player is jumping]
+  protected isFalling: boolean = false; // ** [Flag if player is jumping]
+  protected jumpHeight: number = -2.5; // ** [The users jump height]
   protected movingSpeedX: number = 0; // ** [The current X-axis value]
   protected movingSpeedY: number = 0; // ** [The current Y-axis value]
   protected movingSpeed: number = 0; // ** [The amount we will multiply the Left Stick axis by]
+  protected jumpAllowed: boolean = true;
 
   // ** [The player config is stored here on load]
   protected playerConfig: PlayerConfig;
 
+  private spriteSale: number = 1.75;
   protected hp = 100;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
-    super(scene, x, y, texture);
+  constructor(scene: Scene, x: number, y: number, texture: string) {
+    super(scene.matter.world, x, y, texture);
+
+    this.setName(texture)
+      .setRectangle(12, 31, {
+        friction: 0.01,
+        frictionAir: 0.01,
+      })
+      .setFixedRotation()
+      .setScale(this.spriteSale);
+
     scene.add.existing(this);
-    scene.physics.add.existing(this);
-    this.getBody().setCollideWorldBounds(true);
   }
 
   update() {
     this.checkFlip();
-  }
-
-  /**
-   * Apply damage to the player
-   *
-   * @param value - Damage to apply to the user
-   */
-  public getDamage(value?: number): void {
-    this.scene.tweens.add({
-      targets: this,
-      duration: 100,
-      repeat: 3,
-      yoyo: true,
-      alpha: 0.5,
-      onStart: () => {
-        if (value) {
-          this.hp = this.hp - value;
-        }
-      },
-      onComplete: () => {
-        this.setAlpha(1);
-      },
-    });
   }
 
   /**
@@ -64,18 +52,16 @@ export class Actor extends Physics.Arcade.Sprite {
    */
   protected checkFlip(): void {
     if (this.getBody().velocity.x < 0) {
-      this.getBody().setOffset(this.getBody().width, 0);
-      this.scaleX = -1;
+      this.scaleX = -this.spriteSale;
     } else if (this.getBody().velocity.x > 0) {
-      this.getBody().setOffset(0, 0);
-      this.scaleX = 1;
+      this.scaleX = this.spriteSale;
     }
   }
 
   /**
-   * Return the body as a Arcade.Body
+   * Return the body as a  .Body
    */
-  protected getBody(): Physics.Arcade.Body {
-    return this.body as Physics.Arcade.Body;
+  protected getBody(): MatterJS.BodyType {
+    return this.body as MatterJS.BodyType;
   }
 }

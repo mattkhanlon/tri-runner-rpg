@@ -1,18 +1,5 @@
 {
-  "name": "level_level_0_config",
-  "map": "level_level_0_json",
-  "Layers": {
-    "Border": [],
-    "World": [],
-    "Base": [""],
-    "Collision": [""],
-    "Interactive": [],
-    "Environment": []
-  },
-  "Objects": {
-    "Interactive": [
-      { "key": "", "name": "" },
-      { "key": "", "name": "" }
-    ]
-  }
+  "name": "level_0",
+  "map": "level_0_json",
+  "gravity": 1800
 }

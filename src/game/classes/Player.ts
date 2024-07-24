@@ -2,7 +2,7 @@ import { Input, Scene } from "phaser";
 import { Actor } from "./Actor";
 import TextureKeys from "../const/TextureKeys";
 import ControllerMapKeys from "../const/ControllerMapKeys";
-import { PlayerAnimKeys } from "../const/AnimationsKeys";
+import { PlayerKeys } from "../const/PlayerKeys";
 import PlayerConfig from "../config/PlayerConfig";
 
 export class Player extends Actor {
@@ -13,7 +13,7 @@ export class Player extends Actor {
   private gamePad: Input.Gamepad.Gamepad | undefined;
 
   // ** [The amount we will multiply the movingSpeed by]
-  private sprintSpeed: number = 2;
+  private sprintSpeed: number = 1.75;
 
   // ** [GAMEPAD]
 
@@ -25,7 +25,7 @@ export class Player extends Actor {
     this.movingSpeed = this.baseSpeed;
 
     // ** Create our sprite animations
-    this.anims.createFromAseprite(TextureKeys.Player);
+    this.createAnimations();
   }
 
   // ** [INIT]
@@ -67,15 +67,35 @@ export class Player extends Actor {
       this.isMoving &&
       !this.isAttacking &&
       !this.isWalkBlocked &&
-      !this.isJumping
+      !this.isJumping &&
+      !this.isFalling
     ) {
-      this.playAnimation(PlayerAnimKeys.Run);
+      this.playAnimation({ key: PlayerKeys.Run });
     }
 
     // ** If no movement, Play Idle animation
-    if (!this.isMoving && !this.isWalkBlocked && !this.isJumping) {
-      this.playAnimation(PlayerAnimKeys.Idle);
+    if (
+      !this.isMoving &&
+      !this.isWalkBlocked &&
+      !this.isJumping &&
+      !this.isFalling
+    ) {
+      this.playAnimation({ key: PlayerKeys.Idle });
     }
+
+    // ** What are we checking for if the player is falling?
+    if (this.isFalling) {
+      this.playAnimation({ key: PlayerKeys.Fall });
+
+      if (this.body?.velocity.y == 0) {
+        this.isFalling = false;
+        this.isWalkBlocked = true;
+        this.movingSpeedX = 0;
+        this.movingSpeedY = 0;
+        this.playAnimation({ key: PlayerKeys.Land, duration: 2 });
+      }
+    }
+
     this.checkFlip();
   }
 
@@ -92,12 +112,19 @@ export class Player extends Actor {
 
     if (!this.isWalkBlocked) {
       this.movingSpeedX = this.gamePad.leftStick.x * this.movingSpeed;
-      this.movingSpeedY = this.gamePad.leftStick.y * this.movingSpeed;
     }
 
     // ** Flip the character in the direction we need him
-    this.getBody().setVelocity(this.movingSpeedX, this.movingSpeedY);
-    //this.getBody().velocity.normalize().scale(5);
+    this.setVelocityX(this.movingSpeedX);
+
+    if (this.isJumping) {
+      this.setVelocityY(this.jumpHeight);
+    }
+
+    if (this.getBody().velocity.y > 1) {
+      this.playAnimation({ key: PlayerKeys.Fall });
+      this.isFalling = true;
+    }
 
     if (this.movingSpeedX != 0 || this.movingSpeedY != 0) {
       this.isMoving = true;
@@ -111,28 +138,47 @@ export class Player extends Actor {
     switch (button) {
       // ** [ATTACK]
       case ControllerMapKeys.RT:
-        this.playerIsAttacking(PlayerAnimKeys.AttackBasic);
+        this.playerIsAttacking(PlayerKeys.AttackBasic);
 
-        this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-          this.playerIsAttacking(PlayerAnimKeys.AttackBasicCombo);
-        });
+        break;
+      case ControllerMapKeys.RB:
+        this.playerIsAttacking(PlayerKeys.AttackBasicCombo);
         break;
       // ** [JUMP]
       case ControllerMapKeys.A:
-        this.playerIsJumping(PlayerAnimKeys.Jump);
+        this.playerIsJumping(PlayerKeys.Jump_Up);
         break;
       // ** [SPRINT]
       case ControllerMapKeys.LEFT_CLICK:
-        this.playerIsSprinting(PlayerAnimKeys.Run, true);
+        this.playerIsSprinting(PlayerKeys.Run, true);
         break;
       // ** [CROUCH]
       case ControllerMapKeys.RIGHT_CLICK:
-        this.playerIsCrouching(PlayerAnimKeys.Run, true);
+        this.playerIsCrouching(PlayerKeys.Run, true);
         break;
       default:
         console.log("No action recored");
         break;
     }
+  }
+
+  /**
+   * Creates the Animations for the character
+   */
+  private createAnimations() {
+    this.anims.createFromAseprite(TextureKeys.Player_Anim_Run);
+    this.anims.createFromAseprite(TextureKeys.Player_Anim_Attack1);
+    this.anims.createFromAseprite(TextureKeys.Player_Anim_Attack2);
+    this.anims.createFromAseprite(TextureKeys.Player_Anim_Idle);
+    this.anims.createFromAseprite(TextureKeys.Player_Anim_Jump);
+    this.anims.createFromAseprite(TextureKeys.Player_Anim_Land);
+
+    this.on(
+      Phaser.Animations.Events.ANIMATION_COMPLETE,
+      (event: AnimationEvent) => {
+        this.animationListeners(event);
+      },
+    );
   }
 
   // ** [ANIMATIONS]
@@ -141,9 +187,36 @@ export class Player extends Actor {
    *
    * @param key Name of the animation we want to play
    ** ****************************/
-  private playAnimation(key: string): void {
-    this.stopAnimation(key);
+  private playAnimation(
+    key: Phaser.Types.Animations.PlayAnimationConfig,
+  ): void {
+    this.stopAnimation(key.key);
     !this.anims.isPlaying && this.anims.play(key);
+  }
+
+  /**
+   * A spot to work with all listeners depending on the event and key that was fired.
+   *
+   * @param event The event we fired
+   */
+  private animationListeners(event: AnimationEvent): void {
+    switch (event.key) {
+      case PlayerKeys.Jump_Up:
+        this.isJumping = false;
+        this.isFalling = true;
+        break;
+      case PlayerKeys.AttackBasic:
+        this.isWalkBlocked = false;
+        this.isAttacking = false;
+        break;
+      case PlayerKeys.Land:
+        this.isWalkBlocked = false;
+
+        if (!this.jumpAllowed) {
+          this.jumpAllowed = true;
+        }
+        break;
+    }
   }
 
   // ** [ACTION/ITEM/USAGE]
@@ -166,13 +239,8 @@ export class Player extends Actor {
     this.movingSpeedY = 0;
 
     // ** Player the animation for Attack
-    if (!this.isJumping) this.playAnimation(animation);
-
-    // ** Once the animation is finished, lets clean up
-    this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-      this.isWalkBlocked = false;
-      this.isAttacking = false;
-    });
+    if (!this.isJumping && !this.isFalling)
+      this.playAnimation({ key: animation });
   }
 
   /** ****************************
@@ -191,7 +259,7 @@ export class Player extends Actor {
       // ** Check we are not sprinting
       if (this.isSprinting) this.playerIsSprinting(undefined, false);
       this.movingSpeed = this.baseSpeed * this.crouchSpeed;
-      this.playAnimation(animation);
+      this.playAnimation({ key: animation });
     } else {
       this.movingSpeed = this.baseSpeed;
     }
@@ -202,15 +270,16 @@ export class Player extends Actor {
    * the player attack
    ** ****************************/
   private playerIsJumping(animation: string = "") {
-    this.isJumping = true;
-    this.playAnimation(animation);
-
-    this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-      this.playAnimation(PlayerAnimKeys.Fall);
-      this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-        this.isJumping = false;
+    if (this.jumpAllowed) {
+      this.isJumping = true;
+      this.jumpAllowed = false;
+      this.anims.stop();
+      this.anims.play({
+        key: animation,
+        frameRate: 15,
+        repeat: 5,
       });
-    });
+    }
   }
 
   /** ****************************
@@ -229,7 +298,7 @@ export class Player extends Actor {
       // ** Check we are not crouched
       if (this.isCrouched) this.playerIsCrouching(undefined, false);
       this.movingSpeed = this.baseSpeed * this.sprintSpeed;
-      this.playAnimation(animation);
+      this.playAnimation({ key: animation });
     } else {
       this.movingSpeed = this.baseSpeed / this.sprintSpeed;
     }
@@ -241,7 +310,7 @@ export class Player extends Actor {
    *
    * @param key Name of the animation we want to play
    ** ****************************/
-  private stopAnimation(key: string): void {
+  private stopAnimation(key: string | Phaser.Animations.Animation): void {
     if (this.anims.currentAnim?.key != key) this.anims.stop();
   }
 
@@ -260,7 +329,7 @@ export class Player extends Actor {
     this.movingSpeedY = 0; // ** The current Y-axis value
 
     this.play({
-      key: PlayerAnimKeys.Hit,
+      key: PlayerKeys.Hit,
       repeat: 3,
     });
   }

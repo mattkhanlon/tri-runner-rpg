@@ -9,6 +9,7 @@ import LevelFactory from "../factory/LevelFactory";
 
 export class Game extends Scene {
   // ** [VARIABLES]
+  world: Phaser.Physics.Matter.World;
   camera: Cameras.Scene2D.Camera;
   background: GameObjects.Image;
   gameText: GameObjects.Text;
@@ -21,36 +22,42 @@ export class Game extends Scene {
 
   // ** [CREATE]
   create() {
+    this.world = this.matter.world;
     this.camera = this.cameras.main;
-
     //** Enable the HUD */
 
     // ** Create the layers up to the base layer
+
+    //this.world.disableGravity();
     this.createLevelLayers(TextureKeys.Level_0_Config);
+    this.world.setBounds(this.level.maxWidth, this.level.maxHeight + 100);
 
     // ** Create the player next
     this.createPlayer();
 
+    // ** set up the camera
     this.createCamera();
+    this.camera.setZoom(1.65);
 
     // ** Add the Top Environment Layer
-    this.level.finalizeLevelCreation();
-  }
-
-  createCamera() {
-    // ** Config the comera to the player
-    this.camera.setZoom(3);
-    this.camera.setBounds(
-      0,
-      0,
-      this.level.map.widthInPixels,
-      this.level.map.heightInPixels,
-    );
-    this.camera.startFollow(this.player, true);
-
     EventBus.emit("current-scene-ready", this);
   }
 
+  /**
+   * Creates the camera allowing it
+   * to follow the player, setting some
+   * offsets as well.
+   */
+  createCamera() {
+    this.camera.startFollow(this.player, true, 0.1, 0.1, 0, 150);
+    this.camera.setZoom(1.75);
+  }
+
+  /**
+   * Creates the Level
+   *
+   * @param level The level we want to load
+   */
   createLevelLayers(level: string) {
     this.level = LevelFactory.createLevel(this, this.cache.json.get(level));
     this.level.create();
@@ -69,7 +76,7 @@ export class Game extends Scene {
 
     // ** position the player
     this.player.x = this.level.spawnPoint.x;
-    this.player.y = this.level.spawnPoint.y;
+    this.player.y = this.level.spawnPoint.y - 25;
   }
 
   /** ***********************************************
@@ -83,7 +90,7 @@ export class Game extends Scene {
   // ** [UPDATE]
   update() {
     this.player.update();
-    this.level.update(this.player);
+    //this.level.update(this.player);
   }
 
   /** ***********************************************

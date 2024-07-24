@@ -5,14 +5,9 @@
 interface LevelConfig {
   name: string;
   map: string;
-  Layers: {
-    Border: string[];
-    World: string[];
-    Base: string[];
-    Collision: string[];
-    Interactive: string[];
-    Environment: string[];
-  };
+  gravity: number;
+  Layers: string[];
+  Tileset: string[];
   Objects: {
     Interactive: { key: string; name: string }[];
   };

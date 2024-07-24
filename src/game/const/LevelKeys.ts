@@ -11,6 +11,6 @@ export enum LevelLayerKeys {
 }
 
 export enum LevelObjectKeys {
-  Level_Spawn_Locations = "Interactive/spawn_locations",
-  Level_Player_Spawn = "player_spawn_point",
+  Level_Spawn_Locations = "Spawn_Locations",
+  Level_Player_Spawn = "player_spawn",
 }

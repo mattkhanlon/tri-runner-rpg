@@ -3,7 +3,7 @@ import { EventBus } from "../EventBus";
 import SceneKeys from "../const/SceneKeys";
 import PlayerFactory from "../factory/PlayerFactory";
 import TextureKeys from "../const/TextureKeys";
-import { PlayerAnimKeys } from "../const/AnimationsKeys";
+import { PlayerKeys } from "../const/PlayerKeys";
 
 export class GameOver extends Scene {
   // ** [VARIABLES]
@@ -44,14 +44,14 @@ export class GameOver extends Scene {
       },
     );
 
-    // ** Play PlayerAnimKeys.Idle animation
-    this.player.play(PlayerAnimKeys.Idle);
+    // ** Play PlayerKeys.Idle animation
+    this.player.play(PlayerKeys.Idle);
 
-    // ** Play PlayerAnimKeys.Hit animation
+    // ** Play PlayerKeys.Hit animation
     this.player.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-      this.player.play(PlayerAnimKeys.Death);
+      this.player.play(PlayerKeys.Death);
 
-      // ** Play PlayerAnimKeys.Death animation
+      // ** Play PlayerKeys.Death animation
       this.player.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
         text.destroy();
         this.changeScene();

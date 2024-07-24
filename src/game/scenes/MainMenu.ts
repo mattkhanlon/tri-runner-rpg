@@ -3,7 +3,7 @@ import { EventBus } from "../EventBus";
 import SceneKeys from "../const/SceneKeys";
 import PlayerFactory from "../factory/PlayerFactory";
 import TextureKeys from "../const/TextureKeys";
-import { PlayerAnimKeys } from "../const/AnimationsKeys";
+import { PlayerKeys } from "../const/PlayerKeys";
 
 export class MainMenu extends Scene {
   // ** [VARIABLES]
@@ -18,7 +18,8 @@ export class MainMenu extends Scene {
   create() {
     this.createScreen();
 
-    // Annouce we are ready
+    this.matter.world.disableGravity();
+
     EventBus.emit("current-scene-ready", this);
   }
 
@@ -35,8 +36,10 @@ export class MainMenu extends Scene {
       this.cache.json.get(TextureKeys.PlayerJSON),
     );
 
+    this.player.setX(this.scale.canvas.width / 2);
+    this.player.setY(this.scale.canvas.height / 2);
     this.player.play({
-      key: PlayerAnimKeys.Idle,
+      key: PlayerKeys.Idle,
       repeat: -1,
     });
 

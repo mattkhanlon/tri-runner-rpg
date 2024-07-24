@@ -5,9 +5,6 @@ import GlobalKeys from "./GlobalKeys";
  */
 enum AssetPathKeys {
   // ** [PLAYER OBJECTS]
-  Player = GlobalKeys.SpriteFolder + "Player/default.player.png",
-  PlayerAseprite = GlobalKeys.SpriteFolder + "Player/default.player.json",
-  PlayerJSON = GlobalKeys.SpriteFolder + "Player/player.json",
 
   // ** [LEVEL OBJECTS]
   Level_0 = GlobalKeys.LevelFolder + "level_0/level_0.png",
@@ -15,7 +12,8 @@ enum AssetPathKeys {
   Level_0_Config = GlobalKeys.LevelFolder + "level_0/level_0_config.json",
 
   // ** [TERRAIN]
-  Terrain_Water = GlobalKeys.TerrainFolder + "terrain_water/terrain_water.png",
+  Texture_BasicTileMap = "terrain/basic_tilemap/basic_tilemap.png",
+  Texture_Background = "terrain/basic_tilemap/background.png",
 }
 
 export default AssetPathKeys;
