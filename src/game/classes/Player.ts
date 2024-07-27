@@ -15,8 +15,6 @@ export class Player extends Actor {
   // ** [The amount we will multiply the movingSpeed by]
   private sprintSpeed: number = 1.75;
 
-  // ** [GAMEPAD]
-
   constructor(scene: Scene, playerConfig: PlayerConfig) {
     super(scene, 0, 0, TextureKeys.Player);
 
@@ -39,6 +37,47 @@ export class Player extends Actor {
       Input.Gamepad.Events.GAMEPAD_BUTTON_DOWN,
       (event: number) => {
         this.checkPlayerButtonOnDown(event);
+      },
+    );
+
+    this.gamePad?.on(
+      Input.Gamepad.Events.GAMEPAD_BUTTON_UP,
+      (event: number) => {
+        this.checkPlayerButtonOnUp(event);
+      },
+    );
+  }
+
+  /**
+   * Do we need to check something when a collision happens?
+   */
+  private initPlayerCollision(): void {
+    this.setOnCollideActive(
+      (collision: Phaser.Types.Physics.Matter.MatterCollisionData) => {
+        //console.log(collision);
+      },
+    );
+  }
+
+  /**
+   * Creates the Animations for the character
+   */
+  private createAnimations() {
+    this.anims.createFromAseprite(PlayerKeys.Anim_Run);
+    this.anims.createFromAseprite(PlayerKeys.Anim_Attack1);
+    this.anims.createFromAseprite(PlayerKeys.Anim_Attack2);
+    this.anims.createFromAseprite(PlayerKeys.Anim_Idle);
+    this.anims.createFromAseprite(PlayerKeys.Anim_Jump);
+    this.anims.createFromAseprite(PlayerKeys.Anim_Land);
+    this.anims.createFromAseprite(PlayerKeys.Anim_Walk);
+    this.anims.createFromAseprite(PlayerKeys.Anim_Attack3);
+    this.anims.createFromAseprite(PlayerKeys.Anim_Punch_Jab);
+    this.anims.createFromAseprite(PlayerKeys.Anim_Punch_Cross);
+
+    this.on(
+      Phaser.Animations.Events.ANIMATION_COMPLETE,
+      (event: AnimationEvent) => {
+        this.animationListeners(event);
       },
     );
   }
@@ -76,7 +115,7 @@ export class Player extends Actor {
     // ** If no movement, Play Idle animation
     if (
       !this.isMoving &&
-      !this.isWalkBlocked &&
+      !this.isAttacking &&
       !this.isJumping &&
       !this.isFalling
     ) {
@@ -89,10 +128,9 @@ export class Player extends Actor {
 
       if (this.body?.velocity.y == 0) {
         this.isFalling = false;
-        this.isWalkBlocked = true;
-        this.movingSpeedX = 0;
-        this.movingSpeedY = 0;
-        this.playAnimation({ key: PlayerKeys.Land, duration: 2 });
+        if (!this.jumpAllowed) {
+          this.jumpAllowed = true;
+        }
       }
     }
 
@@ -109,17 +147,13 @@ export class Player extends Actor {
    ** ****************************/
   private updatePlayerMovement() {
     // Stop any previous movement from the last frame
-
-    if (!this.isWalkBlocked) {
-      this.movingSpeedX = this.gamePad.leftStick.x * this.movingSpeed;
-    }
-
-    // ** Flip the character in the direction we need him
-    this.setVelocityX(this.movingSpeedX);
+    this.movingSpeedX = this.gamePad?.leftStick.x * this.movingSpeed;
 
     if (this.isJumping) {
       this.setVelocityY(this.jumpHeight);
     }
+
+    if (this.isAttacking) this.movingSpeedX = this.movingSpeedX / 5;
 
     if (this.getBody().velocity.y > 1) {
       this.playAnimation({ key: PlayerKeys.Fall });
@@ -131,9 +165,18 @@ export class Player extends Actor {
     } else {
       this.isMoving = false;
     }
+
+    // ** Flip the character in the direction we need him
+    this.setVelocityX(this.movingSpeedX);
   }
 
-  // ** [CHECKS]
+  // ** [PLAYER BINDINGS]
+  /**
+   * Checks which Button triggered the event and then performs
+   * an action for that button
+   *
+   * @param button The button that was pressed
+   */
   private checkPlayerButtonOnDown(button: number) {
     switch (button) {
       // ** [ATTACK]
@@ -142,7 +185,18 @@ export class Player extends Actor {
 
         break;
       case ControllerMapKeys.RB:
-        this.playerIsAttacking(PlayerKeys.AttackBasicCombo);
+        this.playerIsAttacking(PlayerKeys.Attack_Katana);
+        break;
+      case ControllerMapKeys.X:
+        if (this.anims.currentAnim?.key == PlayerKeys.Punch_Jab) {
+          this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+            this.playerIsAttacking(PlayerKeys.Punch_Cross);
+          });
+        }
+
+        if (this.anims.currentAnim?.key != PlayerKeys.Punch_Jab) {
+          this.playerIsAttacking(PlayerKeys.Punch_Jab);
+        }
         break;
       // ** [JUMP]
       case ControllerMapKeys.A:
@@ -162,23 +216,15 @@ export class Player extends Actor {
     }
   }
 
-  /**
-   * Creates the Animations for the character
-   */
-  private createAnimations() {
-    this.anims.createFromAseprite(TextureKeys.Player_Anim_Run);
-    this.anims.createFromAseprite(TextureKeys.Player_Anim_Attack1);
-    this.anims.createFromAseprite(TextureKeys.Player_Anim_Attack2);
-    this.anims.createFromAseprite(TextureKeys.Player_Anim_Idle);
-    this.anims.createFromAseprite(TextureKeys.Player_Anim_Jump);
-    this.anims.createFromAseprite(TextureKeys.Player_Anim_Land);
-
-    this.on(
-      Phaser.Animations.Events.ANIMATION_COMPLETE,
-      (event: AnimationEvent) => {
-        this.animationListeners(event);
-      },
-    );
+  private checkPlayerButtonOnUp(button: number) {
+    switch (button) {
+      case ControllerMapKeys.A:
+        console.log(button);
+        if (this.isJumping) {
+          this.anims.complete();
+        }
+        break;
+    }
   }
 
   // ** [ANIMATIONS]
@@ -205,16 +251,12 @@ export class Player extends Actor {
         this.isJumping = false;
         this.isFalling = true;
         break;
+      case PlayerKeys.Punch_Cross:
+      case PlayerKeys.Punch_Jab:
+      case PlayerKeys.Attack_Katana:
       case PlayerKeys.AttackBasic:
         this.isWalkBlocked = false;
         this.isAttacking = false;
-        break;
-      case PlayerKeys.Land:
-        this.isWalkBlocked = false;
-
-        if (!this.jumpAllowed) {
-          this.jumpAllowed = true;
-        }
         break;
     }
   }
@@ -232,15 +274,16 @@ export class Player extends Actor {
    * the player attack
    ** ****************************/
   private playerIsAttacking(animation: string = "") {
-    // ** Set Flags on Player
-    this.isAttacking = true;
-    this.isWalkBlocked = true;
-    this.movingSpeedX = 0;
-    this.movingSpeedY = 0;
+    if (!this.isJumping && !this.isFalling) {
+      // ** Set Flags on Player
+      this.isAttacking = true;
+      this.movingSpeedX = 0;
+      this.movingSpeedY = 0;
 
-    // ** Player the animation for Attack
-    if (!this.isJumping && !this.isFalling)
-      this.playAnimation({ key: animation });
+      // ** Player the animation for Attack
+      if (!this.isJumping && !this.isFalling)
+        this.playAnimation({ key: animation });
+    }
   }
 
   /** ****************************
@@ -270,14 +313,14 @@ export class Player extends Actor {
    * the player attack
    ** ****************************/
   private playerIsJumping(animation: string = "") {
-    if (this.jumpAllowed) {
+    if (this.jumpAllowed && !this.isFalling) {
       this.isJumping = true;
       this.jumpAllowed = false;
       this.anims.stop();
       this.anims.play({
         key: animation,
         frameRate: 15,
-        repeat: 5,
+        repeat: 4,
       });
     }
   }
@@ -337,5 +380,6 @@ export class Player extends Actor {
   setGamePad(gamePad: Input.Gamepad.Gamepad | undefined) {
     this.gamePad = gamePad;
     this.initPlayerBindings();
+    this.initPlayerCollision();
   }
 }

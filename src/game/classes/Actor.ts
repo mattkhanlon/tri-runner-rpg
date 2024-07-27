@@ -2,7 +2,7 @@ import { Physics, Scene } from "phaser";
 import PlayerConfig from "../config/PlayerConfig";
 
 export class Actor extends Physics.Matter.Sprite {
-  protected baseSpeed: number = 1.75; // ** [The base speed for the user]
+  protected baseSpeed: number = 1.25; // ** [The base speed for the user]
   protected isMoving: boolean = false; // ** [Flag if the player is moving]
   protected isWalkBlocked: boolean = false; // ** [Flag if the player is blocked from Walking]
   protected isSprinting: boolean = false; // ** [Flag is player is sprinting]
@@ -19,16 +19,16 @@ export class Actor extends Physics.Matter.Sprite {
   // ** [The player config is stored here on load]
   protected playerConfig: PlayerConfig;
 
-  private spriteSale: number = 1.75;
+  private spriteSale: number = 1.35;
   protected hp = 100;
 
   constructor(scene: Scene, x: number, y: number, texture: string) {
     super(scene.matter.world, x, y, texture);
 
     this.setName(texture)
-      .setRectangle(12, 31, {
-        friction: 0.01,
-        frictionAir: 0.01,
+      .setRectangle(12, 28, {
+        friction: 0.0,
+        frictionAir: 0.0,
       })
       .setFixedRotation()
       .setScale(this.spriteSale);

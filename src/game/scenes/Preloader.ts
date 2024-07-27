@@ -32,12 +32,27 @@ export class Preloader extends Phaser.Scene {
       AssetPathKeys.Texture_BasicTileMap,
     );
     this.load.image(
+      TextureKeys.Texture_BasicTileMapTwo,
+      AssetPathKeys.Texture_BasicTileMapTwo,
+    );
+    this.load.image(
       TextureKeys.Texture_Background,
       AssetPathKeys.Texture_Background,
     );
 
+    this.load.image(
+      TextureKeys.Texture_Background_Sky_One,
+      AssetPathKeys.Texture_Background_Sky_One,
+    );
+
+    this.load.image(
+      TextureKeys.Texture_Background_Sky_Two,
+      AssetPathKeys.Texture_Background_Sky_Two,
+    );
+
     // **  [LOAD LEVELS]
     this.load.image(TextureKeys.Level_0, AssetPathKeys.Level_0);
+
     this.load.tilemapTiledJSON(
       TextureKeys.Level_0_JSON,
       AssetPathKeys.Level_0_JSON,
@@ -53,39 +68,63 @@ export class Preloader extends Phaser.Scene {
     // );
 
     this.load.aseprite(
-      TextureKeys.Player_Anim_Run,
+      PlayerKeys.Anim_Run,
       `${PlayerKeys.Asset_Player_Anim_Run}.png`,
       `${PlayerKeys.Asset_Player_Anim_Run}.json`,
     );
 
     this.load.aseprite(
-      TextureKeys.Player_Anim_Attack1,
+      PlayerKeys.Anim_Attack1,
       `${PlayerKeys.Asset_Player_Anim_Attack1}.png`,
       `${PlayerKeys.Asset_Player_Anim_Attack1}.json`,
     );
 
     this.load.aseprite(
-      TextureKeys.Player_Anim_Attack2,
+      PlayerKeys.Anim_Attack2,
       `${PlayerKeys.Asset_Player_Anim_Attack2}.png`,
       `${PlayerKeys.Asset_Player_Anim_Attack2}.json`,
     );
 
     this.load.aseprite(
-      TextureKeys.Player_Anim_Idle,
+      PlayerKeys.Anim_Idle,
       `${PlayerKeys.Asset_Player_Anim_Idle}.png`,
       `${PlayerKeys.Asset_Player_Anim_Idle}.json`,
     );
 
     this.load.aseprite(
-      TextureKeys.Player_Anim_Jump,
+      PlayerKeys.Anim_Jump,
       `${PlayerKeys.Asset_Player_Anim_Jump}.png`,
       `${PlayerKeys.Asset_Player_Anim_Jump}.json`,
     );
 
     this.load.aseprite(
-      TextureKeys.Player_Anim_Land,
+      PlayerKeys.Anim_Land,
       `${PlayerKeys.Asset_Player_Anim_Land}.png`,
       `${PlayerKeys.Asset_Player_Anim_Land}.json`,
+    );
+
+    this.load.aseprite(
+      PlayerKeys.Anim_Walk,
+      `${PlayerKeys.Asset_Player_Anim_Walk}.png`,
+      `${PlayerKeys.Asset_Player_Anim_Walk}.json`,
+    );
+
+    this.load.aseprite(
+      PlayerKeys.Anim_Attack3,
+      `${PlayerKeys.Asset_Player_Anim_Attack3}.png`,
+      `${PlayerKeys.Asset_Player_Anim_Attack3}.json`,
+    );
+
+    this.load.aseprite(
+      PlayerKeys.Anim_Punch_Cross,
+      `${PlayerKeys.Asset_Player_Anim_Punch_Cross}.png`,
+      `${PlayerKeys.Asset_Player_Anim_Punch_Cross}.json`,
+    );
+
+    this.load.aseprite(
+      PlayerKeys.Anim_Punch_Jab,
+      `${PlayerKeys.Asset_Player_Anim_Punch_Jab}.png`,
+      `${PlayerKeys.Asset_Player_Anim_Punch_Jab}.json`,
     );
 
     // **  [JSON]
@@ -98,6 +137,6 @@ export class Preloader extends Phaser.Scene {
     //  For example, you can define global animations here, so we can use them in other scenes.
 
     //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-    this.scene.start(SceneKeys.MainMenu);
+    this.scene.start(SceneKeys.Game);
   }
 }

@@ -13,7 +13,10 @@ enum AssetPathKeys {
 
   // ** [TERRAIN]
   Texture_BasicTileMap = "terrain/basic_tilemap/basic_tilemap.png",
+  Texture_BasicTileMapTwo = "terrain/basic_tilemap/basic_tileset_2.png",
   Texture_Background = "terrain/basic_tilemap/background.png",
+  Texture_Background_Sky_One = "terrain/basic_tilemap/Background_1.png",
+  Texture_Background_Sky_Two = "terrain/basic_tilemap/Background_2.png",
 }
 
 export default AssetPathKeys;

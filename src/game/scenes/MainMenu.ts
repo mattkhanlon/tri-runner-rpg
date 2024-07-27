@@ -51,6 +51,7 @@ export class MainMenu extends Scene {
       { font: "16px Courier" },
     );
 
+    console.log(this.input.gamepad?.gamepads);
     // ** Add a listener for the Gamepad
     this.input.gamepad?.once(
       "connected",

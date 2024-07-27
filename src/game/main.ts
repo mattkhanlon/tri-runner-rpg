@@ -19,8 +19,15 @@ const config: Phaser.Types.Core.GameConfig = {
   physics: {
     default: "matter",
     matter: {
-      debug: false,
-      gravity: { x: 0, y: 0.25 },
+      debug: true,
+      gravity: { x: 0, y: 0.2 },
+      positionIterations: 10,
+      velocityIterations: 10,
+      "plugins.attractors": true,
+      "plugins.wrap": true,
+      runner: {
+        fps: 60,
+      },
     },
   },
   scale: {

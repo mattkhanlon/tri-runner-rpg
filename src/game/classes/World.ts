@@ -1,6 +1,5 @@
 import { LevelObjectKeys } from "../const/LevelKeys";
 import LevelConfig from "../config/LevelConfig";
-import { Player } from "./Player";
 
 export class World {
   // ** []
@@ -51,13 +50,7 @@ export class World {
    *
    * @param player Accepts the player object
    */
-  checkCollisionWith(player: Player) {
-    this.scene.matter.collision.collides(
-      player.body,
-      this.collisionLayers,
-      true,
-    );
-  }
+  checkCollisionWith() {}
 
   /**
    * Creates the layers from a string array
@@ -81,7 +74,6 @@ export class World {
       layer: layer,
     });
     this.scene.matter.world.convertTilemapLayer(layer);
-    this.collisionLayers?.push(layer);
   }
 
   /**
