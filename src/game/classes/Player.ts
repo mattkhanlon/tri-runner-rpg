@@ -153,7 +153,7 @@ export class Player extends Actor {
       this.setVelocityY(this.jumpHeight);
     }
 
-    if (this.isAttacking) this.movingSpeedX = this.movingSpeedX / 5;
+    if (this.isAttacking) this.movingSpeedX = this.movingSpeedX * 0.15;
 
     if (this.getBody().velocity.y > 1) {
       this.playAnimation({ key: PlayerKeys.Fall });

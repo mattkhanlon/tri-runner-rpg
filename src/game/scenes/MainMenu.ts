@@ -51,7 +51,6 @@ export class MainMenu extends Scene {
       { font: "16px Courier" },
     );
 
-    console.log(this.input.gamepad?.gamepads);
     // ** Add a listener for the Gamepad
     this.input.gamepad?.once(
       "connected",
@@ -61,6 +60,45 @@ export class MainMenu extends Scene {
         this.changeScene();
       },
       this,
+    );
+
+    this.addNotice();
+  }
+
+  addNotice() {
+    const button1 = this.add.text(
+      this.player.x - 125,
+      this.player.y - 250,
+      "A = Jump",
+      { font: "16px Courier" },
+    );
+
+    const button2 = this.add.text(
+      this.player.x - 125,
+      this.player.y - 225,
+      "X = Jab / Cross",
+      { font: "16px Courier" },
+    );
+
+    const button3 = this.add.text(
+      this.player.x - 125,
+      this.player.y - 200,
+      "RB = Katana Attack",
+      { font: "16px Courier" },
+    );
+
+    const button4 = this.add.text(
+      this.player.x - 125,
+      this.player.y - 175,
+      "RT = Sword Attack",
+      { font: "16px Courier" },
+    );
+
+    const button5 = this.add.text(
+      this.player.x - 125,
+      this.player.y - 150,
+      "LS = Sprint",
+      { font: "16px Courier" },
     );
   }
 

@@ -2,7 +2,7 @@ import { Physics, Scene } from "phaser";
 import PlayerConfig from "../config/PlayerConfig";
 
 export class Actor extends Physics.Matter.Sprite {
-  protected baseSpeed: number = 1.25; // ** [The base speed for the user]
+  protected baseSpeed: number = 1.5; // ** [The base speed for the user]
   protected isMoving: boolean = false; // ** [Flag if the player is moving]
   protected isWalkBlocked: boolean = false; // ** [Flag if the player is blocked from Walking]
   protected isSprinting: boolean = false; // ** [Flag is player is sprinting]
