@@ -1,27 +1,31 @@
-import LevelConfig from "../config/LevelConfig";
-import { Player } from "./Player";
 import { World } from "./World";
+import LevelInterface from "../interfaces/LevelInterface";
+import { Player } from "./Player";
 
 export class Level extends World {
-  constructor(scene: Phaser.Scene, config: LevelConfig) {
-    super(scene, config);
-  }
+    constructor(scene: Phaser.Scene, levelConfig: LevelInterface) {
+        super(scene, levelConfig);
+    }
 
-  create() {
-    // ** Load the texture
-    this.loadTextures(this.map.tilesets);
+    create() {
+        // ** Load the texture
+        this.loadTextures(this.map.tilesets);
 
-    // ** Create the layers
-    this.createMapLayers(this.map.layers);
+        // ** Create the layers
+        this.createMapLayers(this.map.layers);
 
-    // ** Create the Objects
-    this.createMapObjects(this.map.objects);
+        // ** Create the Objects
+        this.createMapObjects(this.map.objects);
 
-    // ** Object specfic
-    this.createMapSpawnPoint();
-  }
+        // ** Object specfic
+        this.createMapSpawnPoint();
+    }
 
-  update(player: Player) {
-    //this.checkCollisionWith(player);
-  }
+    update() {}
+
+    placePlayer(player: Player) {
+        player.x = this.spawnPoint.x;
+        player.y = this.spawnPoint.y - 10;
+    }
 }
+

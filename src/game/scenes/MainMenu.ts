@@ -1,117 +1,72 @@
-import { GameObjects, Scene } from "phaser";
-import { EventBus } from "../EventBus";
-import SceneKeys from "../const/SceneKeys";
-import PlayerFactory from "../factory/PlayerFactory";
-import TextureKeys from "../const/TextureKeys";
-import { PlayerKeys } from "../const/PlayerKeys";
+import Phaser from "phaser";
 
-export class MainMenu extends Scene {
-  // ** [VARIABLES]
-  title: GameObjects.Text;
-  player: GameObjects.Sprite;
+/**
+ * MainMenu scene for the game.
+ * This scene displays the main menu options for starting the game.
+ */
+export class MainMenu extends Phaser.Scene {
+  /**
+   * The title text object.
+   */
+  private title!: Phaser.GameObjects.Text;
 
+  /**
+   * The sub-title text object.
+   */
+  private subTitle!: Phaser.GameObjects.Text;
+
+  /**
+   * Creates the MainMenu scene.
+   */
   constructor() {
     super("MainMenu");
   }
 
-  // ** [CREATE]
-  create() {
-    this.createScreen();
-
-    this.matter.world.disableGravity();
-
-    EventBus.emit("current-scene-ready", this);
+  /**
+   * Initializes the scene.
+   */
+  create(): void {
+    this.createBackground();
+    this.createTitle();
+    this.createSubTitle();
   }
 
-  /** ***********************************************
-   ** Create the starting screen before moving to the
-   ** game screen
-   *
-   *  @todo Add menu options
-   ** **********************************************/
-  createScreen() {
-    // ** Add a Player Model w/ Idle animation playing
-    this.player = PlayerFactory.createPlayer(
-      this,
-      this.cache.json.get(TextureKeys.PlayerJSON),
-    );
-
-    this.player.setX(this.scale.canvas.width / 2);
-    this.player.setY(this.scale.canvas.height / 2);
-    this.player.play({
-      key: PlayerKeys.Idle,
-      repeat: -1,
-    });
-
-    // ** Get the player to activate the controller
-    const text = this.add.text(
-      this.player.x - 125,
-      this.player.y + 50,
-      "Press any button to continue.",
-      { font: "16px Courier" },
-    );
-
-    // ** Add a listener for the Gamepad
-    this.input.gamepad?.once(
-      "connected",
-      () => {
-        // ** [INIT PLAYER]
-        text.destroy();
-        this.changeScene();
-      },
-      this,
-    );
-
-    this.addNotice();
+  /**
+   * Creates the background for the MainMenu.
+   */
+  private createBackground(): void {
+    this.cameras.main.setBackgroundColor("#000000");
   }
 
-  addNotice() {
-    const button1 = this.add.text(
-      this.player.x - 125,
-      this.player.y - 250,
-      "A = Jump",
-      { font: "16px Courier" },
-    );
+  /**
+   * Creates the title text for the MainMenu.
+   */
+  private createTitle(): void {
+    const centerX = this.cameras.main.width / 2;
 
-    const button2 = this.add.text(
-      this.player.x - 125,
-      this.player.y - 225,
-      "X = Jab / Cross",
-      { font: "16px Courier" },
-    );
-
-    const button3 = this.add.text(
-      this.player.x - 125,
-      this.player.y - 200,
-      "RB = Katana Attack",
-      { font: "16px Courier" },
-    );
-
-    const button4 = this.add.text(
-      this.player.x - 125,
-      this.player.y - 175,
-      "RT = Sword Attack",
-      { font: "16px Courier" },
-    );
-
-    const button5 = this.add.text(
-      this.player.x - 125,
-      this.player.y - 150,
-      "LS = Sprint",
-      { font: "16px Courier" },
-    );
+    this.title = this.add
+      .text(centerX, 150, "<Unknown>", {
+        fontFamily: "Courier",
+        fontSize: "22px",
+        fontStyle: "500",
+        color: "#ffffff",
+      })
+      .setOrigin(0.5);
   }
 
-  // ** [UPDATE]
-  update() {}
+  /**
+   * Creates the sub-title text for the MainMenu.
+   */
+  private createSubTitle(): void {
+    const centerX = this.cameras.main.width / 2;
+    const titleBottom = this.title.y + this.title.height / 2;
 
-  /** ***********************************************
-   ** Change the scene
-   *
-   *  @todo Move keybings to external config
-   *  @binding {enter} - Click enter to mave to the next screen
-   ** **********************************************/
-  changeScene() {
-    this.scene.start(SceneKeys.Game);
+    this.subTitle = this.add
+      .text(centerX, titleBottom + 10, "...walk into the beginning...", {
+        fontFamily: "Courier",
+        fontSize: "12px",
+        color: "#ffffff",
+      })
+      .setOrigin(0.5, 0);
   }
 }

@@ -1,105 +1,153 @@
 import { EventBus } from "../EventBus";
 import { Cameras, GameObjects, Scene } from "phaser";
 import SceneKeys from "../const/SceneKeys";
-import { Player } from "../classes/Player";
-import { Level } from "../classes/Level";
 import PlayerFactory from "../factory/PlayerFactory";
-import TextureKeys from "../const/TextureKeys";
+import LevelKeys from "../const/LevelKeys";
 import LevelFactory from "../factory/LevelFactory";
+import PlayerKeys from "../const/PlayerKeys";
+import { Level } from "../classes/Level";
+import { Player } from "../classes/Player";
+import { Controller } from "../classes/Controller";
 
 export class Game extends Scene {
-  // ** [VARIABLES]
-  world: Phaser.Physics.Matter.World;
-  camera: Cameras.Scene2D.Camera;
-  background: GameObjects.Image;
-  gameText: GameObjects.Text;
-  player: Player;
-  level: Level;
+    // ** [VARIABLES]
+    world: Phaser.Physics.Matter.World;
+    camera: Cameras.Scene2D.Camera;
+    background: GameObjects.Image;
+    gameText: GameObjects.Text;
+    player: Player;
+    level: Level;
+    controller: Controller;
 
-  constructor() {
-    super(SceneKeys.Game);
-  }
+    constructor() {
+        super(SceneKeys.Game);
+    }
 
-  // ** [CREATE]
-  create() {
-    this.world = this.matter.world;
-    this.camera = this.cameras.main;
-    //** Enable the HUD */
+    // ** [CREATE]
+    create() {
+        this.world = this.matter.world;
+        this.camera = this.cameras.main;
+        //** Enable the HUD */
 
-    // ** Create the layers up to the base layer
+        // ** Create the layers up to the base layer
 
-    //this.world.disableGravity();
-    this.createLevelLayers(TextureKeys.Level_0_Config);
-    this.world.setBounds(this.level.maxWidth, this.level.maxHeight + 100);
+        //this.world.disableGravity();
+        this.createLevel(LevelKeys.Level_0_Config);
 
-    // ** Create the player next
-    this.createPlayer();
+        // ** Create the player next
+        this.createPlayer();
 
-    // ** set up the camera
-    this.createCamera();
-    this.camera.setZoom(1.65);
+        // ** set up the camera
+        this.configureCamera();
 
-    // ** Add the Top Environment Layer
-    EventBus.emit("current-scene-ready", this);
-  }
+        // ** Configure the gamepad
+        this.configureGamepad();
 
-  /**
-   * Creates the camera allowing it
-   * to follow the player, setting some
-   * offsets as well.
-   */
-  createCamera() {
-    this.camera.startFollow(this.player, true, 0.1, 0.1, 0, 150);
-    this.camera.setZoom(1.75);
-  }
+        // ** Add the Top Environment Layer
+        EventBus.emit("current-scene-ready", this);
+    }
 
-  /**
-   * Creates the Level
-   *
-   * @param level The level we want to load
-   */
-  createLevelLayers(level: string) {
-    this.level = LevelFactory.createLevel(this, this.cache.json.get(level));
-    this.level.create();
-  }
+    /**
+     * Creates the Level
+     *
+     * @param level The level we want to load
+     */
+    createLevel(level: string) {
+        this.level = LevelFactory.createLevel(this, this.cache.json.get(level));
+        this.level.create();
 
-  /**
-   * Create the Player object into the scene
-   */
-  createPlayer() {
-    // ** Add a Player Model w/ Idle animation playing
-    this.player = PlayerFactory.createPlayer(
-      this,
-      this.cache.json.get(TextureKeys.PlayerJSON),
-    );
-    this.player.setGamePad(this.input.gamepad?.getPad(0));
+        // Get the boundries for the world
+        this.world.setBounds(
+            0,
+            0,
+            this.level.maxWidth,
+            this.level.maxHeight + 100,
+        );
+    }
 
-    // ** position the player
-    this.player.x = this.level.spawnPoint.x;
-    this.player.y = this.level.spawnPoint.y - 25;
-  }
+    /**
+     * Create the Player object into the scene
+     */
+    createPlayer() {
+        // ** Add a Player Model w/ Idle animation playing
+        this.player = PlayerFactory.createPlayer(
+            this,
+            this.cache.json.get(PlayerKeys.Player_JSON_Name),
+        );
 
-  /** ***********************************************
-   ** Creates the player HUD
-   *
-   ** **********************************************/
-  createHUD() {
-    // ** Set up the camera
-  }
+        // ** Place the player at the spawn point
+        this.level.placePlayer(this.player);
+    }
 
-  // ** [UPDATE]
-  update() {
-    this.player.update();
-    //this.level.update(this.player);
-  }
+    /**
+     * Creates the camera allowing it
+     * to follow the player, setting some
+     * offsets as well.
+     */
+    configureCamera() {
+        this.camera.startFollow(this.player, false, 1, 1, 0, 0);
+        this.camera.setBounds(
+            0,
+            0,
+            this.level.maxWidth,
+            this.level.maxHeight - 200,
+            true,
+        );
+        this.camera.setZoom(10);
+        //this.configureCameraMask();
+    }
 
-  /** ***********************************************
-   ** Change the scene
-   *
-   *  @todo Move keybings to external config
-   *  @binding {enter} - Click enter to mave to the next screen
-   ** **********************************************/
-  changeScene() {
-    this.scene.start(SceneKeys.GameOver);
-  }
+    /**
+     * Set up the gamepad to work with the current scene
+     */
+    configureGamepad() {
+        this.input.gamepad?.once(
+            "connected",
+            (pad: Phaser.Input.Gamepad.Gamepad) => {
+                this.controller = new Controller(this.input.gamepad!, pad);
+                this.controller.configurePlayerControls(this.player);
+            },
+            this,
+        );
+    }
+
+    /**
+     *
+     */
+    configureCameraMask() {
+        // Create a circular mask that follows the player
+        const maskGraphics = this.make.graphics({
+            x: 0,
+            y: 0,
+        });
+        maskGraphics.fillStyle(0xffffff);
+        maskGraphics.fillCircle(0, 0, 400); // Adjust the radius as needed
+
+        const mask = maskGraphics.createGeometryMask();
+
+        // Apply the mask to the level
+        this.camera.setMask(mask);
+
+        // Update mask position in the scene's update method
+        this.events.on("update", () => {
+            maskGraphics.x = this.camera.zoomX;
+            maskGraphics.y = this.camera.zoomY;
+        });
+    }
+
+    // ** [UPDATE]
+    update() {
+        this.player.update();
+    }
+
+    /** ***********************************************
+     ** Change the scene
+     *
+     *  @todo Move keybings to external config
+     *  @binding {enter} - Click enter to mave to the next screen
+     ** **********************************************/
+    changeScene() {
+        this.scene.start(SceneKeys.GameOver);
+    }
 }
+

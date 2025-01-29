@@ -1,0 +1,120 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level_0.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "C:/$Recycle.Bin/S-1-5-21-297581759-2131177535-2513605613-1001/$RCC1YLO.json": {
+            "scale": 0.16029188368055555,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 3584.0866474868844,
+                "y": 514.6860720934167
+            }
+        },
+        "C:/$Recycle.Bin/S-1-5-21-297581759-2131177535-2513605613-1001/$RCC1YLO.json#Background_1": {
+            "scaleInDock": 1
+        },
+        "C:/$Recycle.Bin/S-1-5-21-297581759-2131177535-2513605613-1001/$RCC1YLO.json#Background_2": {
+            "scaleInDock": 1
+        },
+        "C:/$Recycle.Bin/S-1-5-21-297581759-2131177535-2513605613-1001/$RCC1YLO.json#background": {
+            "scaleInDock": 1
+        },
+        "C:/$Recycle.Bin/S-1-5-21-297581759-2131177535-2513605613-1001/$RCC1YLO.json#basic_tilemap": {
+            "scaleInDock": 1
+        },
+        "C:/$Recycle.Bin/S-1-5-21-297581759-2131177535-2513605613-1001/$RCC1YLO.json#basic_tileset_2": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mattk/OneDrive/Desktop/level_0.json": {
+            "scale": 0.16029188368055555,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 3584.0866474868844,
+                "y": 514.6860720934167
+            }
+        },
+        "C:/Users/mattk/OneDrive/Desktop/level_0.json#Background_1": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mattk/OneDrive/Desktop/level_0.json#Background_2": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mattk/OneDrive/Desktop/level_0.json#background": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mattk/OneDrive/Desktop/level_0.json#basic_tilemap": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mattk/OneDrive/Desktop/level_0.json#basic_tileset_2": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mattk/OneDrive/Desktop/level_0.tmx": {
+            "scale": 0.16029188368055555,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 3584.0866474868844,
+                "y": 514.6860720934167
+            }
+        },
+        "C:/Users/mattk/OneDrive/Desktop/level_0.tmx#Background_1": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mattk/OneDrive/Desktop/level_0.tmx#Background_2": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mattk/OneDrive/Desktop/level_0.tmx#background": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "C:/Users/mattk/OneDrive/Desktop/level_0.tmx#basic_tilemap": {
+            "scaleInDock": 1
+        },
+        "C:/Users/mattk/OneDrive/Desktop/level_0.tmx#basic_tileset_2": {
+            "scaleInDock": 1
+        },
+        "Textures.tsx": {
+            "scaleInDock": 1
+        },
+        "level_0.tmx": {
+            "scale": 3,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 980.8333333333333,
+                "y": 1084.5
+            }
+        },
+        "level_0.tmx#Textures": {
+            "scaleInDock": 2,
+            "scaleInEditor": 1.5
+        }
+    },
+    "last.exportedFilePath": "C:/Users/mattk/Development/tri-runner-rpg/public/assets/levels/level_0",
+    "last.imagePath": "C:/Users/mattk/Development/tri-runner-rpg/public/assets/terrain",
+    "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "openFiles": [
+        "level_0.tmx"
+    ],
+    "project": "level_0.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+        "level_0.tmx",
+        "C:/Users/mattk/OneDrive/Desktop/level_0.tmx",
+        "C:/Users/mattk/OneDrive/Desktop/level_0.json",
+        "C:/$Recycle.Bin/S-1-5-21-297581759-2131177535-2513605613-1001/$RCC1YLO.json"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
