@@ -30,6 +30,7 @@ pipeline {
       steps {
         sh 'export $(grep -v "^#" .properties | xargs)'
         sh 'printenv | sort'
+        sh '$REPO'
       }
     }  // end stage  
 
