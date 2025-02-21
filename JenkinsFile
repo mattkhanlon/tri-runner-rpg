@@ -37,8 +37,8 @@ pipeline {
       ** **************/
     stage("Retrieve game package") {
       steps {
-        sh 'wget $REPO/download/$RELEASE/$TAG-$VERSION.zip'
-        sh 'unzip $TAG-$VERSION.zip'
+        sh "wget ${env.REPO}/download/${env.RELEASE}/${env.TAG}-${env.VERSION}.zip"
+        sh "unzip ${env.TAG}-${env.VERSION}.zip"
       }
     }  
 
@@ -47,7 +47,7 @@ pipeline {
       ** **************/
     stage("Deploy game package") {
       steps {
-        sh 'cp -r $TAG-$VERSION /var/www/html'
+        sh "cp -r ${env.TAG}-${env.VERSION} /var/www/html"
       }
     } 
   } 
