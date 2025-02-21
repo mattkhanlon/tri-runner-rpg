@@ -9,7 +9,9 @@ pipeline {
     }
   }
 
-  environemnt
+  environemnt {
+    REPO="placeholder"
+  }
 
   /**
    * ## PIPELINE
