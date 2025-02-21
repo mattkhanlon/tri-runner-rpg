@@ -34,7 +34,7 @@ pipeline {
       ** **************/
     stage("Build game package") {
       steps {
-          sh "npx build"
+          sh "npm run build"
       }
     }  
 
