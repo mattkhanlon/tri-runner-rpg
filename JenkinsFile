@@ -21,7 +21,7 @@ pipeline {
      ** **************/
     stage("Config ENV") {
       steps {
-        sh 'source . .properties'
+        sh 'source .properties'
       }
     }  // end stage  
 
