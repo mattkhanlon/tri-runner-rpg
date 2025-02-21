@@ -22,6 +22,7 @@ pipeline {
     stage("Config ENV") {
       steps {
         sh 'source ${WORKSPACE}/.properties'
+        sh 'echo $REPO'
       }
     }  // end stage  
 
@@ -30,6 +31,7 @@ pipeline {
       ** **************/
     stage("Retrieve game package") {
       steps {
+        sh 'echo $REPO'
         sh "wget ${REPO}/download/${RELEASE}/${TAG}-${VERSION}.zip"
         sh "unzip ${TAG}-${VERSION}.zip"
       }
