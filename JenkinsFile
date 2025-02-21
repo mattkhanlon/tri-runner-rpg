@@ -34,7 +34,7 @@ pipeline {
       steps {
         sh 'echo $REPO'
         sh "wget ${REPO}/releases/download/${RELEASE}/${TAG}-${VERSION}.zip"
-        sh "unzip ${TAG}-${VERSION}.zip"
+        sh "unzip ${TAG}-${VERSION}.zip -d ${WORKSPACE}/dist"
       }
     }  
 
@@ -43,7 +43,7 @@ pipeline {
       ** **************/
     stage("Deploy game package") {
       steps {
-        sh "cp -r ${TAG}-${VERSION} /var/www/html"
+        sh "cp -r ${WORKSPACE}/dist/${TAG}-${VERSION} /var/www/html"
       }
     } 
   } 
