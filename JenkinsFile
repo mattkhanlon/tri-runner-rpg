@@ -10,7 +10,11 @@ pipeline {
   }
 
   environment {
-    REPO="placeholder"
+    // Load environment variables from properties file
+    REPO = sh(script: 'grep REPO .properties | cut -d= -f2 | tr -d \'"\'', returnStdout: true).trim()
+    TAG = sh(script: 'grep TAG .properties | cut -d= -f2 | tr -d \'"\'', returnStdout: true).trim()
+    RELEASE = sh(script: 'grep RELEASE .properties | cut -d= -f2 | tr -d \'"\'', returnStdout: true).trim()
+    VERSION = sh(script: 'grep VERSION .properties | cut -d= -f2 | tr -d \'"\'', returnStdout: true).trim()
   }
 
   /**
@@ -25,9 +29,11 @@ pipeline {
      ** **************/
     stage("Config ENV") {
       steps {
-        sh 'source ${WORKSPACE}/.properties'
-        sh 'printenv'
-        sh 'echo $REPO'
+        // Print environment variables to verify they are set correctly
+        sh 'echo "Repository: $REPO"'
+        sh 'echo "Tag: $TAG"'
+        sh 'echo "Release: $RELEASE"'
+        sh 'echo "Version: $VERSION"'
       }
     }  // end stage  
 
