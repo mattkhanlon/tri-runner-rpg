@@ -2,6 +2,7 @@ import { Input } from "phaser";
 import { Player } from "./Player";
 
 export class Controller extends Phaser.Input.Gamepad.Gamepad {
+    // ** The gamepad object for this controller
     readonly gamePad: Phaser.Input.Gamepad.Gamepad;
 
     constructor(
@@ -13,8 +14,12 @@ export class Controller extends Phaser.Input.Gamepad.Gamepad {
         this.gamePad = manager.getPad(pad.index);
     }
 
+    /**
+     * Confiugured the gamepad to work with the player, setting up the input listeners
+     *
+     * @param player The player object to set up our controller with
+     */
     configurePlayerControls(player: Player) {
-        console.log(this.gamePad);
         this.gamePad.on(
             Input.Gamepad.Events.GAMEPAD_BUTTON_DOWN,
             (event: typeof Input.Gamepad.Events) => {

@@ -11,11 +11,17 @@ export enum LevelKeys {
     // ** [LEVEL LAYERS]
     Level_Background_Layer = "Background",
     Level_Player_Layer = "Level",
-    Level_Object_Layer = "Objects",
+    Level_Portals_Layer = "Portals",
+    Level_Enemy_Layer = "Enemies",
+    Level_Respawn_Layer = "Portal_Respawns",
 
     // ** [LEVEL SPECIFIC]
     Level_Spawn_Locations = "Spawn_Locations",
     Level_Player_Spawn = "player_spawn",
+
+    // ** [COLLISION GROUPS]
+    Level_Layer_Collision_Group = 1,
+    Level_Portal_Collision_Group = 77,
 }
 
 export default LevelKeys;

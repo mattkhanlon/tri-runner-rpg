@@ -2,46 +2,41 @@ import { LevelKeys } from "../const/LevelKeys";
 import LevelInterface from "../interfaces/LevelInterface";
 
 export class World {
-    // ** []
-    baseLayer: Phaser.Tilemaps.TilemapLayer | null;
+    // ** Store the current loaded Config
+    levelConfig: LevelInterface;
 
-    // ** []
-    collisionLayer: Phaser.Tilemaps.TilemapLayer | null;
-
-    // ** []
-    collisionLayers: Array<Phaser.Tilemaps.TilemapLayer | null> = [];
-
-    // ** [Store the current loaded Config]
-    config: LevelInterface;
-
-    gravity: number = 1;
-
-    // ** [Store the current loaded Key]
+    // ** Store the current loaded Key
     key: string;
 
-    // ** [The map for the created World/Level]
+    // ** The map for the created World/Level
     map: Phaser.Tilemaps.Tilemap;
 
-    // ** [The Tileset list for the map]
+    // ** The Tileset list for the map
     mapTileset: string[] = [];
 
+    // ** Max width of the map
     maxHeight: number = 5000;
 
+    // ** Max height of the map
     maxWidth: number = 5000;
 
+    // ** Our phaser scene
     scene: Phaser.Scene;
 
-    // ** [Player spawn points]
+    // ** Player spawn points
     spawnPoint: { x: number; y: number };
 
     constructor(scene: Phaser.Scene, config: LevelInterface) {
         // ** Save the Config
         this.scene = scene;
-        this.config = config;
+        this.levelConfig = config;
         this.key = config.map;
         this.map = scene.make.tilemap({
             key: this.key,
         });
+
+        //this.maxWidth = this.map.widthInPixels;
+        //this.maxHeight = this.map.heightInPixels;
     }
 
     /**
@@ -60,7 +55,14 @@ export class World {
     createMapLayers(layers: Phaser.Tilemaps.LayerData[]) {
         for (let i = 0; i < layers.length; i++) {
             const layer = this.map.createLayer(layers[i].name, this.mapTileset);
-            this.createLayerBoundries(layer);
+
+            console.log(layer);
+            switch (layer?.layer.name) {
+                case LevelKeys.Level_Player_Layer:
+                    this.createLayerBoundries(layer);
+                    break;
+            }
+            this.scene.matter.world.convertTilemapLayer(layer!);
         }
     }
 
@@ -71,9 +73,9 @@ export class World {
     createLayerBoundries(layer: Phaser.Tilemaps.TilemapLayer | null) {
         this.map.setCollisionByProperty({
             collides: true,
+            recalculateFaces: true,
             layer: layer,
         });
-        this.scene.matter.world.convertTilemapLayer(layer!);
     }
 
     /**
@@ -82,7 +84,6 @@ export class World {
      * @param objects Array of layer names
      */
     createMapObjects(objects: Phaser.Tilemaps.ObjectLayer[]) {
-        console.log(this.map);
         for (let i = 0; i < objects.length; i++) {
             this.map.createFromObjects(objects[i].name, objects[i]);
         }
@@ -95,7 +96,6 @@ export class World {
      */
     createMapTileset(tileset: string) {
         // ** [CREATE THE TILESET FROM THE IMAGES WE'VE LOADED]
-
         this.map.addTilesetImage(tileset, tileset);
         this.mapTileset.push(tileset);
     }

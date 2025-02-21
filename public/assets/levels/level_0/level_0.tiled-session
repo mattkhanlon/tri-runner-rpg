@@ -7,6 +7,9 @@
     "expandedProjectPaths": [
     ],
     "fileStates": {
+        "": {
+            "scaleInEditor": 1.5
+        },
         "C:/$Recycle.Bin/S-1-5-21-297581759-2131177535-2513605613-1001/$RCC1YLO.json": {
             "scale": 0.16029188368055555,
             "selectedLayer": 0,
@@ -81,15 +84,15 @@
             "scaleInDock": 1
         },
         "level_0.tmx": {
-            "scale": 3,
-            "selectedLayer": 1,
+            "scale": 1.5,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 980.8333333333333,
-                "y": 1084.5
+                "x": 336.33333333333337,
+                "y": 1809.6666666666665
             }
         },
         "level_0.tmx#Textures": {
-            "scaleInDock": 2,
+            "scaleInDock": 1.5,
             "scaleInEditor": 1.5
         }
     },
@@ -104,13 +107,14 @@
         "level_0.tmx"
     ],
     "project": "level_0.tiled-project",
-    "property.type": "bool",
+    "property.type": "string",
     "recentFiles": [
         "level_0.tmx",
         "C:/Users/mattk/OneDrive/Desktop/level_0.tmx",
         "C:/Users/mattk/OneDrive/Desktop/level_0.json",
         "C:/$Recycle.Bin/S-1-5-21-297581759-2131177535-2513605613-1001/$RCC1YLO.json"
     ],
+    "textEdit.monospace": false,
     "tileset.embedInMap": true,
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

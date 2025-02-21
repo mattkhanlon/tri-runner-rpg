@@ -1,0 +1,46 @@
+pipeline {
+
+  /**
+   * ## PIPELINE
+   * Here we will run through each stage of the Jenkins job
+   */
+  stages {
+    
+    /** ***************
+     ** ## CONFIG ENV
+     * Here we will load the properties file. This injects the Key=Pair
+     * as environment variables.
+     ** **************/
+    stage("Config ENV") {
+      steps {
+        // ** Get the config file using the config ID and properties file
+        configFileProvider([configFile(fileId: "${params.ConfigId}", variable: 'propertiesFile')]) {
+          // ** Injects the properties file into the environment
+          load "${propertiesFile}"
+        }
+      }
+    }  // end stage
+
+    /** ***************
+      ** ## Build game package
+      ** **************/
+    stage("Build game package") {
+      steps {
+        catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+          sh "npx build"
+        }
+      }
+    }  
+
+    /** ***************
+      ** ## Build game package
+      ** **************/
+    stage("Deploy game package") {
+      steps {
+        catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+          sh "cp -r /dist /var/www/html"
+        }
+      }
+    } 
+  } 
+}

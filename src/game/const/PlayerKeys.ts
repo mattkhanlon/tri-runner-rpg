@@ -4,6 +4,8 @@ export enum PlayerKeys {
     Player_JSON_Name = "PlayerJSON",
     Player_JSON_Path = "sprites/Player/player.json",
 
+    Player_Collision_Group = 89,
+
     // ** [ANIMATION KEYS]
     Player_Aseprite_Run = "Player_Anim_Run",
     Player_Aseprite_Attack1 = "Player_Anim_Attack1",

@@ -23,8 +23,6 @@ const config: Phaser.Types.Core.GameConfig = {
             gravity: { x: 0, y: 0.18 },
             positionIterations: 20,
             velocityIterations: 10,
-            "plugins.attractors": true,
-            "plugins.wrap": true,
             runner: {
                 fps: 60,
             },
