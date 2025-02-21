@@ -1,4 +1,13 @@
 pipeline {
+  /** ***************
+   ** CONFIGURE AGENT
+   ** **************/
+  agent {
+    node {
+      // ** Set the node/agent our job should run on.
+      label 'ecs_aws_instance'
+    }
+  }
 
   /**
    * ## PIPELINE
