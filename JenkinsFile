@@ -9,6 +9,13 @@ pipeline {
     }
   }
 
+  environment {
+    REPO = ""
+    TAG = ""
+    BUILD = ""
+    VERSION = ""
+  }
+
   /**
    * ## PIPELINE
    */
@@ -22,37 +29,30 @@ pipeline {
     stage("Config ENV") {
       steps {
         // ** Get the config file using the config ID and properties file
-        configFileProvider([configFile(fileId: "${params.ConfigId}", variable: 'propertiesFile')]) {
-          // ** Injects the properties file into the environment
-          load "${propertiesFile}"
-        }
+        // configFileProvider([configFile(fileId: "${params.ConfigId}", variable: 'propertiesFile')]) {
+        //   // ** Injects the properties file into the environment
+        //   load "${propertiesFile}"
+        // }
+        sh "printenv | sort"
       }
-    }  // end stage
+    }  // end stage  
 
     /** ***************
       ** ## Build game package
       ** **************/
-    stage("Install our dependencies") {
+    stage("Retrieve game package") {
       steps {
-          sh "npm install"
+          sh "wget ${REPO}/download/${BUILD}/${TAG}-${VERSION}.zip"
+          sh "unzip ${TAG}-${VERSION}.zip"
       }
     }  
 
     /** ***************
-      ** ## Build game package
-      ** **************/
-    stage("Build game package") {
-      steps {
-          sh "npm run build"
-      }
-    }  
-
-    /** ***************
-      ** ## Build game package
+      ** ## Deploy game package
       ** **************/
     stage("Deploy game package") {
       steps {
-          sh "cp -r /dist /var/www/html"
+          sh "cp -r ${TAG}-${VERSION} /var/www/html"
       }
     } 
   } 
