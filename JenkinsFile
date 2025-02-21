@@ -9,13 +9,6 @@ pipeline {
     }
   }
 
-  environment {
-    REPO = ""
-    TAG = ""
-    BUILD = ""
-    VERSION = ""
-  }
-
   /**
    * ## PIPELINE
    */
