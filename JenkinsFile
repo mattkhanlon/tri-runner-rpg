@@ -34,7 +34,7 @@ pipeline {
       ** **************/
     stage("Install our dependencies") {
       steps {
-          sh "npm ci"
+          sh "npm install"
       }
     }  
 
