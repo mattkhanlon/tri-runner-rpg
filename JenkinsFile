@@ -9,7 +9,7 @@ pipeline {
     }
   }
 
-  environemnt {
+  environment {
     REPO="placeholder"
   }
 
