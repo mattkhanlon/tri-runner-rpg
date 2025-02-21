@@ -42,7 +42,7 @@ pipeline {
       ** **************/
     stage("Deploy game package") {
       steps {
-        sh "cd ${WORKSPACE}/dist"
+        sh "cd /dist"
         sh "cp -r ./ /var/www/html"
       }
     } 
