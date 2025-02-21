@@ -32,7 +32,6 @@ pipeline {
       ** **************/
     stage("Retrieve game package") {
       steps {
-        sh 'echo $REPO'
         sh "wget ${REPO}/releases/download/${RELEASE}/${TAG}-${VERSION}.zip"
         sh "unzip ${TAG}-${VERSION}.zip -d ${WORKSPACE}/dist"
       }
