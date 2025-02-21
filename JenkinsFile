@@ -2,7 +2,6 @@ pipeline {
 
   /**
    * ## PIPELINE
-   * Here we will run through each stage of the Jenkins job
    */
   stages {
     
