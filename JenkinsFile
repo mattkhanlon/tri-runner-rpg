@@ -33,7 +33,6 @@ pipeline {
     stage("Retrieve game package") {
       steps {
         sh "wget ${REPO}/releases/download/${RELEASE}/${TAG}-${VERSION}.zip"
-        sh "unzip ${TAG}-${VERSION}.zip -d /dist"
       }
     }  
 
