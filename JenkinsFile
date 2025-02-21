@@ -28,13 +28,15 @@ pipeline {
      ** **************/
     stage("Config ENV") {
       steps {
+        script {
         // ** Get the config file using the config ID and properties file
         def props = readProperties file: '.properties'
 
-        "sh 'echo ${props.REPO}' > REPO"
-        "sh 'echo ${props.TAG}' > TAG"
-        "sh 'echo ${props.VERSION}' > VERSION"
-        "sh 'echo ${props.RELEASE}' > RELEASE"
+        sh "'echo ${props.REPO}' > REPO"
+        sh "'echo ${props.TAG}' > TAG"
+        sh "'echo ${props.VERSION}' > VERSION"
+        sh "'echo ${props.RELEASE}' > RELEASE"
+        }
       }
     }  // end stage  
 
