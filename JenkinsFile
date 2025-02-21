@@ -21,9 +21,7 @@ pipeline {
      ** **************/
     stage("Config ENV") {
       steps {
-        sh "export \$(grep -v '^#' .properties | xargs -d '\n')"
-        sh 'printenv | sort'
-        sh '$REPO'
+        sh 'source . .properties'
       }
     }  // end stage  
 
