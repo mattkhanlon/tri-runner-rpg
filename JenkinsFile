@@ -29,6 +29,7 @@ pipeline {
     stage("Config ENV") {
       steps {
         sh 'export $(grep -v "^#" .properties | xargs)'
+        sh 'printenv | sort'
       }
     }  // end stage  
 
