@@ -32,6 +32,15 @@ pipeline {
     /** ***************
       ** ## Build game package
       ** **************/
+    stage("Install our dependencies") {
+      steps {
+          sh "npm ci"
+      }
+    }  
+
+    /** ***************
+      ** ## Build game package
+      ** **************/
     stage("Build game package") {
       steps {
           sh "npm run build"
