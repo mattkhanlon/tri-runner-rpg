@@ -29,11 +29,12 @@ pipeline {
     stage("Config ENV") {
       steps {
         // ** Get the config file using the config ID and properties file
-        // configFileProvider([configFile(fileId: "${params.ConfigId}", variable: 'propertiesFile')]) {
-        //   // ** Injects the properties file into the environment
-        //   load "${propertiesFile}"
-        // }
-        sh "printenv | sort"
+        def props = readProperties file: '.properties'
+
+        "sh 'echo ${props.REPO}' > REPO"
+        "sh 'echo ${props.TAG}' > TAG"
+        "sh 'echo ${props.VERSION}' > VERSION"
+        "sh 'echo ${props.RELEASE}' > RELEASE"
       }
     }  // end stage  
 
@@ -42,7 +43,7 @@ pipeline {
       ** **************/
     stage("Retrieve game package") {
       steps {
-          sh "wget ${REPO}/download/${BUILD}/${TAG}-${VERSION}.zip"
+          sh "wget ${REPO}/download/${RELEASE}/${TAG}-${VERSION}.zip"
           sh "unzip ${TAG}-${VERSION}.zip"
       }
     }  
