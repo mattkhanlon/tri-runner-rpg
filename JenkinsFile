@@ -28,7 +28,7 @@ pipeline {
      ** **************/
     stage("Config ENV") {
       steps {
-        sh "export $(grep -v '^#' .properties | xargs)"
+        sh 'export $(grep -v "^#" .properties | xargs)'
       }
     }  // end stage  
 
@@ -37,8 +37,8 @@ pipeline {
       ** **************/
     stage("Retrieve game package") {
       steps {
-          sh "wget ${REPO}/download/${RELEASE}/${TAG}-${VERSION}.zip"
-          sh "unzip ${TAG}-${VERSION}.zip"
+        sh "wget ${REPO}/download/${RELEASE}/${TAG}-${VERSION}.zip"
+        sh "unzip ${TAG}-${VERSION}.zip"
       }
     }  
 
@@ -47,7 +47,7 @@ pipeline {
       ** **************/
     stage("Deploy game package") {
       steps {
-          sh "cp -r ${TAG}-${VERSION} /var/www/html"
+        sh "cp -r ${TAG}-${VERSION} /var/www/html"
       }
     } 
   } 
