@@ -26,9 +26,7 @@ pipeline {
       ** **************/
     stage("Build game package") {
       steps {
-        catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
           sh "npx build"
-        }
       }
     }  
 
@@ -37,9 +35,7 @@ pipeline {
       ** **************/
     stage("Deploy game package") {
       steps {
-        catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
           sh "cp -r /dist /var/www/html"
-        }
       }
     } 
   } 
