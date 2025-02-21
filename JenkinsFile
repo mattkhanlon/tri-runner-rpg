@@ -9,6 +9,11 @@ pipeline {
     }
   }
 
+  /** ***************
+   ** ## CONFIG ENV
+   * Here we will load the properties file. This injects the Key=Pair
+   * as environment variables.
+   ** **************/
   environment {
     // Load environment variables from properties file
     REPO = sh(script: 'grep REPO .properties | cut -d= -f2 | tr -d \'"\'', returnStdout: true).trim()
@@ -21,21 +26,6 @@ pipeline {
    * ## PIPELINE
    */
   stages {
-    
-    /** ***************
-     ** ## CONFIG ENV
-     * Here we will load the properties file. This injects the Key=Pair
-     * as environment variables.
-     ** **************/
-    stage("Config ENV") {
-      steps {
-        // Print environment variables to verify they are set correctly
-        sh 'echo "Repository: $REPO"'
-        sh 'echo "Tag: $TAG"'
-        sh 'echo "Release: $RELEASE"'
-        sh 'echo "Version: $VERSION"'
-      }
-    }  // end stage  
 
     /** ***************
       ** ## Build game package
@@ -43,7 +33,7 @@ pipeline {
     stage("Retrieve game package") {
       steps {
         sh 'echo $REPO'
-        sh "wget ${REPO}/download/${RELEASE}/${TAG}-${VERSION}.zip"
+        sh "wget ${REPO}/releases/download/${RELEASE}/${TAG}-${VERSION}.zip"
         sh "unzip ${TAG}-${VERSION}.zip"
       }
     }  
