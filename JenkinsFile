@@ -41,7 +41,7 @@ pipeline {
       ** **************/
     stage("Deploy game package") {
       steps {
-        sh "sudo unzip ${TAG}-${VERSION}.zip -d /var/www/html -y"
+        sh "sudo unzip ${TAG}-${VERSION}.zip -o -d /var/www/html"
       }
     } 
   } 
