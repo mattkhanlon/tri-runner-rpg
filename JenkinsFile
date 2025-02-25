@@ -49,15 +49,12 @@ pipeline {
         '''
         
         withCredentials([file(credentialsId: "game-launch-config.pem", variable: 'PEM_FILE')]) {
-          pwsh """
-            $acl = Get-Acl "${env:PEM_FILE}"
-            $acl.SetAccessRuleProtection($true, $false)
-            $rule = New-Object System.Security.AccessControl.FileSystemAccessRule("${env:USERNAME}", "Read", "Allow")
-            $acl.SetAccessRule($rule)
-            Set-Acl "${env:PEM_FILE}" $acl
-            
-            scp -v -i "${env:PEM_FILE}" release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER} 
-          """
+          pwsh '''
+            icacls.exe ${env:PEM_FILE} /reset
+            icacls.exe ${env:PEM_FILE} /grant:r "$(${env:username}):(r)"
+            icacls.exe ${env:PEM_FILE} /inheritance:r
+            scp -v -i ${env:PEM_FILE} release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER} 
+          '''
         }
 
         pwsh '''
