@@ -48,9 +48,7 @@ pipeline {
           Compress-Archive -Path ./dist/* -DestinationPath release.zip
         '''
         
-          pwsh '''
-            scp -i c:/${env:credentials} release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER} 
-          '''
+          sh "${env.credentials}"
       }
     }
 
