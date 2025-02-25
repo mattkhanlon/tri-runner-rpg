@@ -14,8 +14,19 @@ pipeline {
   stages {
 
     /** ***************
-      ** ## Build game package
-      ** **************/
+     ** ## Install dependencies
+     ** **************/
+    stage("Install dependencies") {
+      steps {
+        pwsh '''
+          npm ci
+        '''
+      }
+    }
+
+    /** ***************
+     ** ## Build game package
+     ** **************/
     stage("Build package") {
       steps {
         pwsh '''
@@ -24,6 +35,9 @@ pipeline {
       }
     }
     
+    /** ***************
+     ** ## Upload package to server
+     ** **************/
     stage("Upload package to server") {
       steps {
         pwsh '''
@@ -34,8 +48,8 @@ pipeline {
     }
 
     /** ***************
-      ** ## Deploy game package
-      ** **************/
+     ** ## Deploy game package
+     ** **************/
     stage("Deploy game package") {
 
       agent {
