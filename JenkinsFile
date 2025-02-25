@@ -44,9 +44,9 @@ pipeline {
      ** **************/
     stage("Upload package to server") {
       steps {
-        pwsh '''
-          Compress-Archive -Path ./dist/* -DestinationPath release.zip
-        '''
+        // pwsh '''
+        //   Compress-Archive -Path ./dist/* -DestinationPath release.zip
+        // '''
         
         withCredentials([file(credentialsId: "game-launch-config.pem", variable: 'PEM_FILE')]) {
           pwsh """
