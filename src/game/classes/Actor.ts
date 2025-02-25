@@ -4,27 +4,31 @@ import PlayerKeys from "../const/PlayerKeys";
 export class Actor extends Physics.Matter.Sprite {
     // ** [PLAYER CONSTS / SPRITE SETTINGS]
     // ** Scale of our sprite
-    private spriteSale: number = 0.5;
+    private spriteScale: number = 0.5;
     // ** The width of our players hitbox
     private spriteRecWidth: number = 12;
     // ** The height of our players hitbox
     private spriteRecHeight: number = 28;
     // * The friction for our sprite
-    private spriteFriction: number = 0.0;
+    private spriteFriction: number = 0.005;
     // ** The air friction for our sprite
-    private spriteFrictionAir: number = 0.0;
+    private spriteFrictionAir: number = 0.008;
 
     // ** [PLAYER VALUES THAT ARE MODIFIED DURING RUNTIME]
     // ** The base speed for the user
     protected baseSpeed: number = 1.2;
-    // ** The users jump height
-    protected jumpHeight: number = -1.9;
+    // ** The acceleration of the user
+    protected acceleration: number = 0.15;
+    // ** The deceleration in air (slows down movement when not on ground)
+    protected airDeceleration: number = 0.03;
     // ** The current X-axis value
     protected movingSpeedX: number = 0;
     // ** The current Y-axis value
     protected movingSpeedY: number = 0;
     // ** The amount we will multiply the Left Stick axis by
     protected movingSpeed: number = 0;
+    // ** The users jump height
+    protected jumpHeight: number = -2.5;
     // ** The current max health of our player
     protected maxHealth: number = 100;
 
@@ -59,7 +63,7 @@ export class Actor extends Physics.Matter.Sprite {
                 frictionAir: this.spriteFrictionAir,
             })
             .setFixedRotation()
-            .setScale(this.spriteSale);
+            .setScale(this.spriteScale);
 
         this.setCollisionGroup(PlayerKeys.Player_Collision_Group);
         scene.add.existing(this);
@@ -77,9 +81,9 @@ export class Actor extends Physics.Matter.Sprite {
      */
     protected checkFlip(): void {
         if (this.getBody().velocity.x < 0) {
-            this.scaleX = -this.spriteSale;
+            this.scaleX = -this.spriteScale;
         } else if (this.getBody().velocity.x > 0) {
-            this.scaleX = this.spriteSale;
+            this.scaleX = this.spriteScale;
         }
     }
 

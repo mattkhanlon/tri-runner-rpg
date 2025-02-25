@@ -32,7 +32,8 @@ export class Preloader extends Phaser.Scene {
             TextureKeys.tx_Level_0_path,
         );
 
-        // ** [LOAD TEXTURES]
+        this.load.image(TextureKeys.tx_Sky_name, TextureKeys.tx_Sky_path);
+
         this.load.image(
             TextureKeys.tx_level_portal_name,
             TextureKeys.tx_level_portal_path,

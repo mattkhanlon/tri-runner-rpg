@@ -8,7 +8,8 @@
     ],
     "fileStates": {
         "": {
-            "scaleInEditor": 1.5
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "C:/$Recycle.Bin/S-1-5-21-297581759-2131177535-2513605613-1001/$RCC1YLO.json": {
             "scale": 0.16029188368055555,
@@ -84,15 +85,22 @@
             "scaleInDock": 1
         },
         "level_0.tmx": {
-            "scale": 1.5,
-            "selectedLayer": 3,
+            "scale": 0.75,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 336.33333333333337,
-                "y": 1809.6666666666665
+                "x": 887.3333333333331,
+                "y": 2138
             }
         },
+        "level_0.tmx#Dungeon Ruins Tileset Day": {
+            "scaleInEditor": 1
+        },
+        "level_0.tmx#Sky": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
+        },
         "level_0.tmx#Textures": {
-            "scaleInDock": 1.5,
+            "scaleInDock": 2,
             "scaleInEditor": 1.5
         }
     },
@@ -107,7 +115,7 @@
         "level_0.tmx"
     ],
     "project": "level_0.tiled-project",
-    "property.type": "string",
+    "property.type": "int",
     "recentFiles": [
         "level_0.tmx",
         "C:/Users/mattk/OneDrive/Desktop/level_0.tmx",

@@ -45,7 +45,7 @@ export enum PlayerKeys {
     Idle = "Idle",
     Walk = "Walk",
     Jump_Up = "Jump up",
-    Jump = "Jump",
+    Jump = "Max Height",
     Fall = "Jump Down",
     Land = "Land",
     Hit = "Hit",

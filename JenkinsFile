@@ -1,26 +1,4 @@
 pipeline {
-  /** ***************
-   ** CONFIGURE AGENT
-   ** **************/
-  agent {
-    node {
-      // ** Set the node/agent our job should run on.
-      label 'ecs_aws_instance'
-    }
-  }
-
-  /** ***************
-   ** ## CONFIG ENV
-   * Here we will load the properties file. This injects the Key=Pair
-   * as environment variables.
-   ** **************/
-  environment {
-    // Load environment variables from properties file
-    REPO = sh(script: 'grep REPO .properties | cut -d= -f2 | tr -d \'"\'', returnStdout: true).trim()
-    TAG = sh(script: 'grep TAG .properties | cut -d= -f2 | tr -d \'"\'', returnStdout: true).trim()
-    RELEASE = sh(script: 'grep RELEASE .properties | cut -d= -f2 | tr -d \'"\'', returnStdout: true).trim()
-    VERSION = sh(script: 'grep VERSION .properties | cut -d= -f2 | tr -d \'"\'', returnStdout: true).trim()
-  }
 
   /**
    * ## PIPELINE
@@ -30,16 +8,47 @@ pipeline {
     /** ***************
       ** ## Build game package
       ** **************/
-    stage("Retrieve game package") {
-      steps {
-        sh "wget ${REPO}/releases/download/${RELEASE}/${TAG}-${VERSION}.zip"
+    stage("Build package") {
+
+      agent {
+        node {
+          // ** Set the node/agent our job should run on.
+          label 'build_node'
+        }
       }
-    }  
+      
+      steps {
+        // sh "npm build"
+      }
+    }
+    
+    stage("Upload package to server") {
+
+      agent {
+        node {
+          // ** Set the node/agent our job should run on.
+          label 'build_node'
+        }
+      }
+      
+      steps {
+        sh "zip -r /dist release.zip"
+        sh "scp release.zip ${AWS_USER}@${AWS_LINK}:/home/ec2-user"
+      }
+    }
 
     /** ***************
       ** ## Deploy game package
       ** **************/
     stage("Deploy game package") {
+
+      agent {
+        node {
+          // ** Set the node/agent our job should run on.
+          label 'ecs_aws_instance'
+        }
+      }
+
       steps {
         sh "sudo unzip -o ${TAG}-${VERSION}.zip -d /var/www/html"
       }

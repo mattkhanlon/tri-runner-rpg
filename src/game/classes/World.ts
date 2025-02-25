@@ -35,8 +35,8 @@ export class World {
             key: this.key,
         });
 
-        //this.maxWidth = this.map.widthInPixels;
-        //this.maxHeight = this.map.heightInPixels;
+        this.maxWidth = this.map.widthInPixels;
+        this.maxHeight = this.map.heightInPixels;
     }
 
     /**
