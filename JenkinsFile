@@ -1,5 +1,13 @@
 pipeline {
 
+
+  agent {
+    node {
+      // ** Set the node/agent our job should run on.
+      label 'build_node'
+    }
+  }
+
   /**
    * ## PIPELINE
    */
@@ -9,16 +17,9 @@ pipeline {
       ** ## Build game package
       ** **************/
     stage("Build package") {
-
-      agent {
-        node {
-          // ** Set the node/agent our job should run on.
-          label 'build_node'
-        }
-      }
       
       steps {
-        // sh "npm build"
+         sh "npm build"
       }
     }
     
