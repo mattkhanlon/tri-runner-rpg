@@ -48,11 +48,9 @@ pipeline {
           Compress-Archive -Path ./dist/* -DestinationPath release.zip
         '''
         
-        withCredentials([file(credentialsId: "game-launch-config.pem", variable: 'PEM_FILE')]) {
           pwsh '''
-            scp -i $PEM_FILE release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER} -v 
+            scp -i c:/${env:credentials} release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER} 
           '''
-        }
       }
     }
 
