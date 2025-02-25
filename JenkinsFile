@@ -8,6 +8,10 @@ pipeline {
     }
   }
 
+  environment {
+    PEM_FILE = credentials('${env:credentials}')
+  }
+
   /**
    * ## PIPELINE
    */
@@ -49,7 +53,7 @@ pipeline {
         '''
         
         pwsh '''
-          scp -i ${env:credentials} release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER}
+          scp -i ${env:PEM_FILE} release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER}
         '''
       }
     }
