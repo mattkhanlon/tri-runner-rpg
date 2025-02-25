@@ -42,18 +42,18 @@ pipeline {
     /** ***************
      ** ## Upload package to server
      ** **************/
-    stage("Upload package to server") {
-      steps {
-        // pwsh '''
-        //   Compress-Archive -Path ./dist/* -DestinationPath release.zip
-        // '''
+    // stage("Upload package to server") {
+    //   steps {
+    //     // pwsh '''
+    //     //   Compress-Archive -Path ./dist/* -DestinationPath release.zip
+    //     // '''
         
-        withCredentials([file(credentialsId: "game-launch-config.pem", variable: 'PEM_FILE')]) {
-          pwsh '''
-            scp -v -i ${env:PEM_FILE} release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER} 
-          '''
-        }
-      }
+    //     withCredentials([file(credentialsId: "game-launch-config.pem", variable: 'PEM_FILE')]) {
+    //       pwsh '''
+    //         scp -v -i ${env:PEM_FILE} release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER} 
+    //       '''
+    //     }
+    //   }
     }
 
     /** ***************
@@ -69,7 +69,7 @@ pipeline {
       }
 
       steps {
-        sh "sudo unzip -o ${TAG}-${VERSION}.zip -d /var/www/html"
+        sh "sudo unzip -o release.zip -d /var/www/html"
       }
     } 
   } 
