@@ -18,9 +18,13 @@ pipeline {
      ** **************/
     stage("Install dependencies") {
       steps {
-        pwsh '''
-          npm ci
-        '''
+        // ** Run npm ci to install dependencies
+        // ** If this fails, the build will fail
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+          pwsh '''
+            npm ci
+          '''
+        }
       }
     }
 
