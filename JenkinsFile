@@ -48,7 +48,7 @@ pipeline {
           Compress-Archive -Path ./dist/* -DestinationPath release.zip
         '''
         
-        withCredentials([file(credentialsId: "${env:credentials}", variable: 'PEM_FILE')]) {
+        withCredentials([file(credentialsId: "${params.credentials}", variable: 'PEM_FILE')]) {
           pwsh '''
           ${env:credentials}
           ${PEM_FILE}
