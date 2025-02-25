@@ -69,7 +69,7 @@ pipeline {
       }
 
       steps {
-        sh "sudo unzip -o release.zip -d /var/www/html"
+        sh "sudo unzip -o /home/${env:AWS_USER}/release.zip -d /var/www/html"
       }
     } 
   } 
