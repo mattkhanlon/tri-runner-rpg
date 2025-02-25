@@ -49,6 +49,8 @@ pipeline {
         '''
         
         pwsh '''
+          env:AWS_USER
+          env:credentials
           scp release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER}
         '''
       }
