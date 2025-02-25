@@ -50,7 +50,6 @@ pipeline {
         
         withCredentials([file(credentialsId: "${env:credentials}", variable: 'PEM_FILE')]) {
           pwsh '''
-          echo scp -i ${PEM_FILE} release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER} -v 
             scp -i ${PEM_FILE} release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER} -v 
           '''
         }
