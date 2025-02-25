@@ -19,7 +19,7 @@ pipeline {
     stage("Build package") {
       
       steps {
-         sh "npm build"
+         sh "npx run build"
       }
     }
     
