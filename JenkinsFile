@@ -49,7 +49,7 @@ pipeline {
         '''
         
         withCredentials([file(credentialsId: "game-launch-config.pem", variable: 'PEM_FILE')]) {
-          pwsh '''
+          bat '''
             scp -v -o StrictHostKeyChecking=no -i ${env:PEM_FILE} release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER} 
           '''
         }
