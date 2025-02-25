@@ -19,15 +19,15 @@ pipeline {
     stage("Build package") {
       
       steps {
-         pw "npx run build"
+         pwsh "npx run build"
       }
     }
     
     stage("Upload package to server") {
       
       steps {
-        pw "zip -r /dist release.zip"
-        pw "scp release.zip ${AWS_USER}@${AWS_LINK}:/home/ec2-user"
+        pwsh "zip -r /dist release.zip"
+        pwsh "scp release.zip ${AWS_USER}@${AWS_LINK}:/home/ec2-user"
       }
     }
 
