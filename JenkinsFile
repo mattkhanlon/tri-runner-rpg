@@ -24,13 +24,6 @@ pipeline {
     }
     
     stage("Upload package to server") {
-
-      agent {
-        node {
-          // ** Set the node/agent our job should run on.
-          label 'build_node'
-        }
-      }
       
       steps {
         sh "zip -r /dist release.zip"
