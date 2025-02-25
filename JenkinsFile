@@ -49,8 +49,8 @@ pipeline {
         // '''
         
         withCredentials([file(credentialsId: "game-launch-config.pem", variable: 'PEM_FILE')]) {
+          echo "${PEM_FILE}"
           pwsh """
-          ${PEM_FILE}
             scp -i ${PEM_FILE} release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER} 
           """
         }
