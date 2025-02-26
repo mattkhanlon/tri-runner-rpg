@@ -20,7 +20,7 @@ const config: Phaser.Types.Core.GameConfig = {
         default: "matter",
         matter: {
             debug: false,
-            gravity: { x: 0, y: 0.18 },
+            gravity: { x: 0, y: 0.12 },
             positionIterations: 20,
             velocityIterations: 10,
             runner: {

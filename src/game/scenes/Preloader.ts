@@ -32,7 +32,8 @@ export class Preloader extends Phaser.Scene {
             TextureKeys.tx_Level_0_path,
         );
 
-        // ** [LOAD TEXTURES]
+        this.load.image(TextureKeys.tx_Sky_name, TextureKeys.tx_Sky_path);
+
         this.load.image(
             TextureKeys.tx_level_portal_name,
             TextureKeys.tx_level_portal_path,
@@ -133,7 +134,7 @@ export class Preloader extends Phaser.Scene {
         //  For example, you can define global animations here, so we can use them in other scenes.
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start(SceneKeys.Game);
+        this.scene.start(SceneKeys.MainMenu);
     }
 }
 

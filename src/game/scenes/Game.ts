@@ -85,15 +85,15 @@ export class Game extends Scene {
      * offsets as well.
      */
     configureCamera() {
-        this.camera.startFollow(this.player, false, 1, 1, 0, 0);
         this.camera.setBounds(
             0,
-            0,
+            0 - 16,
             this.level.maxWidth,
-            this.level.maxHeight - 200,
+            this.level.maxHeight,
             true,
         );
-        this.camera.setZoom(10);
+        this.camera.setZoom(7.5);
+        this.camera.startFollow(this.player, false, 1, 1, 0, 0);
         //this.configureCameraMask();
     }
 
