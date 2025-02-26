@@ -69,10 +69,6 @@ pipeline {
             }
           """
         }
-
-        pwsh '''
-          rm release.zip
-        '''
       }
     }
 
