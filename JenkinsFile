@@ -16,28 +16,28 @@ pipeline {
     // /** ***************
     //  ** ## Install dependencies
     //  ** **************/
-    // stage("Install dependencies") {
-    //   steps {
-    //     // ** Run npm ci to install dependencies
-    //     // ** If this fails, the build will fail
-    //     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-    //       pwsh '''
-    //         npm ci
-    //       '''
-    //     }
-    //   }
-    // }
+    stage("Install dependencies") {
+      steps {
+        // ** Run npm ci to install dependencies
+        // ** If this fails, the build will fail
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+          pwsh '''
+            npm ci
+          '''
+        }
+      }
+    }
 
     // /** ***************
     //  ** ## Build game package
     //  ** **************/
-    // stage("Build package") {
-    //   steps {
-    //     pwsh '''
-    //       npm run build
-    //     '''
-    //   }
-    // }
+    stage("Build package") {
+      steps {
+        pwsh '''
+          npm run build
+        '''
+      }
+    }
     
     /** ***************
      ** ## Upload package to server
