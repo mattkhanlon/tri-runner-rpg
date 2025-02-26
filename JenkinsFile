@@ -61,7 +61,7 @@ pipeline {
             Set-Acl "${env:PEM_FILE}" \$acl
             
             # Attempt the SCP transfer
-            scp -v -o StrictHostKeyChecking=no -i "${env:PEM_FILE}" release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER}
+            scp -o StrictHostKeyChecking=no -i "${env:PEM_FILE}" release.zip ${env:AWS_USER}@${env:AWS_LINK}:/home/${env:AWS_USER}
             
             if (\$LASTEXITCODE -ne 0) {
                 Write-Error "SCP transfer failed"
