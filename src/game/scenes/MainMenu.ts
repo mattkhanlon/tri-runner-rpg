@@ -94,7 +94,6 @@ export class MainMenu extends Phaser.Scene {
         this.input.gamepad?.once("connected", (pad) => {
             pad.on("down", () => this.scene.start(SceneKeys.Game));
         });
-        this.input.on("pointerdown", () => this.scene.start(SceneKeys.Game));
     }
 }
 
