@@ -26,9 +26,9 @@ export class Player extends Actor {
 
     // ** [UPDATE]
     update(): void {
-        this.playerIdle();
-        this.playerMove();
         this.playerFalling();
+        this.playerMove();
+        this.playerIdle();
         this.checkFlip();
     }
 
@@ -104,16 +104,31 @@ export class Player extends Actor {
      ** ****************************/
     private playerMove(): void {
         if (this.gamePad != undefined) {
-            this.movingSpeedX = this.gamePad?.leftStick.x * this.baseSpeed;
+            // The target speed based on the gamepad input
+            const targetSpeed = this.gamePad?.leftStick.x * this.baseSpeed;
 
-            if (this.movingSpeedX != 0 || this.movingSpeedY != 0) {
-                this.isMoving = true;
+            if (this.isJumping || this.isFalling) {
+                this.movingSpeedX +=
+                    (targetSpeed - this.movingSpeedX) * this.airDeceleration;
             } else {
+                // On ground: normal acceleration
+                this.movingSpeedX +=
+                    (targetSpeed - this.movingSpeedX) * this.acceleration;
+            }
+
+            // ** If the player is not moving, set the speed to 0
+            if (Math.abs(this.movingSpeedX) < 0.01) {
+                this.movingSpeedX = 0;
                 this.isMoving = false;
             }
 
-            if (this.isMoving && !this.isJumping && !this.isFalling) {
-                this.playAnimation({ key: PlayerKeys.Run, repeat: -1 });
+            // ** Check if we're moving and flag it
+            if (this.movingSpeedX != 0 || this.movingSpeedY != 0) {
+                this.isMoving = true;
+                //
+                if (!this.isJumping && !this.isFalling) {
+                    this.playAnimation({ key: PlayerKeys.Run, repeat: -1 });
+                }
             }
 
             // ** Flip the character in the direction we need him
@@ -134,18 +149,15 @@ export class Player extends Actor {
      * Checks for when the player is falling
      */
     private playerFalling(): void {
-        // ** Check if we're falling and set it to true
-        if (this.body?.velocity.y > 0.01) {
-            this.isFalling = true;
-            this.playAnimation({ key: PlayerKeys.Fall, repeat: -1 });
-        }
+        const yVelocity = this.body?.velocity.y || 0;
 
-        // ** Check if we've stopped falling, play landing if needed
-        if (this.body?.velocity.y == 0) {
-            if (this.isFalling) {
-                this.isFalling = false;
-                this.playAnimation({ key: PlayerKeys.Land, repeat: -1 });
-            }
+        // Check if player is falling (positive y velocity = moving downward)
+        if (yVelocity > 0.1) {
+            this.isFalling = true;
+            this.jumpAllowed = false;
+            this.playAnimation({ key: PlayerKeys.Fall, repeat: -1 });
+        } else {
+            this.isFalling = false;
             this.jumpAllowed = true;
             this.doubleJump = true;
         }
@@ -155,26 +167,21 @@ export class Player extends Actor {
      * Performs the jump action if allowed for a player object
      */
     private playerJump(): void {
-        if (this.doubleJump && !this.jumpAllowed) {
-            this.doubleJump = false;
-            this.jumpAllowed = true;
-        }
-
         if (this.jumpAllowed && !this.isJumping) {
             this.isJumping = true;
+            this.isFalling = false;
             this.jumpAllowed = false;
+
+            // Apply jump velocity
             this.setVelocityY(this.jumpHeight);
+
             this.playAnimation({ key: PlayerKeys.Jump_Up, repeat: 0 });
 
-            this.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-                this.playAnimation({ key: PlayerKeys.Jump, repeat: -1 });
-            });
-
             const checkJumpState = () => {
+                this.setVelocityY(this.jumpHeight);
                 if (!this.gamePad.A) {
-                    this.isFalling = true;
                     this.isJumping = false;
-                    this.playAnimation({ key: PlayerKeys.Fall, repeat: -1 });
+                    this.setVelocityY(0.12);
                     this.scene.events.off("update", checkJumpState);
                 }
             };
